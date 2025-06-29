@@ -5,72 +5,6 @@
     box-sizing: border-box;
 }
 
-/* Prevent iOS zoom on form inputs */
-@supports (-webkit-touch-callout: none) {
-    input,
-    textarea,
-    select {
-        font-size: 16px !important;
-    }
-}
-
-/* Improve mobile performance and touch handling */
-* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Allow text selection for content areas */
-p, h1, h2, h3, h4, h5, h6, span, div.card-description, div.project-description, div.skill-description {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-/* Allow selection in form elements */
-input, textarea, select {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-/* Extra small screens (under 320px) */
-@media (max-width: 320px) {
-    .section {
-        padding: 80px 12px 40px;
-    }
-
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-
-    .nav-item a {
-        padding: 8px 10px;
-        font-size: 11px;
-    }
-
-    .card,
-    .project-card,
-    .skill-item {
-        padding: 20px;
-    }
-
-    .modal-content {
-        margin: 4px;
-        border-radius: 16px;
-    }
-}
-
 :root {
     --primary-color: #007AFF;
     --secondary-color: #5856D6;
@@ -98,9 +32,6 @@ body {
     line-height: 1.6;
     transition: var(--transition);
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
 }
 
 /* === ANIMATED BACKGROUND === */
@@ -1297,290 +1228,7 @@ body {
 }
 
 /* === RESPONSIVE === */
-
-/* Mobile Small (320px - 480px) */
-@media (max-width: 480px) {
-    .nav-container {
-        top: 8px;
-        left: 8px;
-        right: 8px;
-        transform: none;
-        width: auto;
-    }
-
-    .nav-pill {
-        padding: 4px;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-
-    .nav-item a {
-        padding: 10px 14px;
-        font-size: 12px;
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-    }
-
-    .section {
-        padding: 90px 16px 50px;
-    }
-
-    .container {
-        max-width: 100%;
-        padding: 0;
-    }
-
-    .hero-title {
-        font-size: clamp(2.8rem, 12vw, 4.5rem);
-        line-height: 1.1;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .hero-subtitle {
-        font-size: clamp(1.2rem, 5vw, 1.6rem);
-        margin-bottom: 24px;
-        text-align: center;
-    }
-
-    .hero-description {
-        font-size: 16px;
-        margin-bottom: 40px;
-        padding: 0 8px;
-        text-align: center;
-        line-height: 1.6;
-    }
-
-    .hero-badge {
-        padding: 8px 16px;
-        font-size: 13px;
-        margin-bottom: 20px;
-        border-radius: 20px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .btn {
-        padding: 16px 24px;
-        font-size: 14px;
-        border-radius: 12px;
-        min-height: 48px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .hero-cta {
-        flex-direction: column;
-        gap: 16px;
-        width: 100%;
-        align-items: center;
-    }
-
-    .hero-cta .btn {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-    }
-
-    .cv-downloads {
-        margin-top: 40px;
-    }
-
-    .cv-title {
-        font-size: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .cv-buttons {
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
-    }
-
-    .btn-cv {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-        padding: 14px 20px;
-        font-size: 14px;
-        min-height: 48px;
-        border-radius: 12px;
-    }
-
-    .section-title {
-        font-size: clamp(2rem, 8vw, 2.8rem);
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .section-subtitle {
-        font-size: 17px;
-        padding: 0 8px;
-        margin-bottom: 40px;
-        text-align: center;
-        line-height: 1.6;
-    }
-
-    .card {
-        padding: 28px;
-        margin-bottom: 20px;
-        border-radius: 20px;
-    }
-
-    .card-title {
-        font-size: 22px;
-        margin-bottom: 12px;
-    }
-
-    .card-description {
-        font-size: 15px;
-        line-height: 1.6;
-    }
-
-    .project-card {
-        padding: 28px;
-        border-radius: 20px;
-    }
-
-    .project-card .project-description {
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-
-    .project-tags {
-        gap: 8px;
-        margin-bottom: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .project-tag {
-        padding: 6px 12px;
-        font-size: 12px;
-        border-radius: 12px;
-    }
-
-    .skill-item {
-        padding: 24px;
-        border-radius: 20px;
-    }
-
-    .skill-name {
-        font-size: 16px;
-        margin-bottom: 8px;
-    }
-    }
-
-    .skill-description {
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .contact-info,
-    .contact-form {
-        padding: 28px;
-        border-radius: 20px;
-    }
-
-    .form-input,
-    .form-textarea,
-    .form-select {
-        padding: 16px;
-        font-size: 16px;
-        min-height: 48px;
-        border-radius: 12px;
-    }
-
-    .form-label {
-        font-size: 15px;
-        margin-bottom: 8px;
-    }
-
-    .contact-item {
-        padding: 16px 0;
-        border-radius: 12px;
-    }
-
-    .contact-details h4 {
-        font-size: 16px;
-    }
-
-    .contact-details p {
-        font-size: 14px;
-    }
-
-    /* Modal improvements for small screens */
-    .modal {
-        padding: 8px;
-    }
-
-    .modal-content {
-        max-width: 100%;
-        max-height: 95vh;
-        margin: 0;
-        border-radius: 20px;
-        overflow-y: auto;
-    }
-
-    .modal-header {
-        padding: 16px 20px;
-        position: sticky;
-        top: 0;
-        background: var(--bg-secondary);
-        border-radius: 20px 20px 0 0;
-    }
-
-    .modal-title {
-        font-size: 20px;
-        line-height: 1.3;
-    }
-
-    .modal-close {
-        width: 44px;
-        height: 44px;
-        font-size: 24px;
-    }
-
-    .modal-body {
-        padding: 20px;
-        font-size: 15px;
-    }
-
-    .modal-body h2 {
-        font-size: 20px;
-        margin: 24px 0 12px 0;
-    }
-
-    .modal-body h3 {
-        font-size: 18px;
-        margin: 20px 0 10px 0;
-    }
-
-    .modal-body p,
-    .modal-body li {
-        font-size: 14px;
-        line-height: 1.7;
-    }
-
-    .tech-tag {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-}
-
-/* Mobile Medium (481px - 767px) */
-@media (min-width: 481px) and (max-width: 767px) {
+@media (max-width: 768px) {
     .nav-container {
         top: 10px;
         left: 10px;
@@ -1591,359 +1239,81 @@ body {
 
     .nav-pill {
         padding: 6px;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
     }
 
     .nav-item a {
-        padding: 12px 16px;
-        font-size: 13px;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        padding: 10px 16px;
+        font-size: 12px;
     }
 
     .section {
-        padding: 100px 20px 60px;
+        padding: 100px 16px 60px;
     }
 
     .hero-cta {
         flex-direction: column;
-        gap: 16px;
         align-items: center;
-    }
-
-    .hero-cta .btn {
-        width: 100%;
-        max-width: 340px;
-        justify-content: center;
-        min-height: 50px;
     }
 
     .cv-buttons {
         flex-direction: column;
-        gap: 16px;
         align-items: center;
     }
 
     .btn-cv {
         width: 100%;
-        max-width: 340px;
+        max-width: 250px;
         justify-content: center;
-        min-height: 50px;
-    }
-
-    .card,
-    .project-card,
-    .skill-item {
-        padding: 32px;
-        border-radius: 20px;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 28px;
-    }
-}
-
-/* Tablet (768px - 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .nav-container {
-        top: 15px;
-        left: 20px;
-        right: 20px;
-        transform: none;
-        width: auto;
+        gap: 24px;
     }
 
-    .section {
-        padding: 110px 24px 70px;
-    }
-
-    .cards-grid {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 20px;
-    }
-
-    .skills-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 18px;
-    }
-
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-    }
-}
-
-/* General mobile improvements */
-@media (max-width: 768px) {
-    /* Prevent horizontal scroll and improve performance */
-    body {
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* Better touch targets */
-    .nav-item a,
-    .btn,
-    .btn-cv {
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        -webkit-tap-highlight-color: rgba(0, 122, 255, 0.2);
-    }
-
-    /* Improve form usability */
-    .form-input,
-    .form-textarea,
-    .form-select {
-        font-size: 16px; /* Prevents zoom on iOS */
-        min-height: 48px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .form-input:focus,
-    .form-textarea:focus,
-    .form-select:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-    }
-
-    .form-select {
-        background-position: right 16px center;
-        background-size: 16px;
-    }
-
-    /* Better spacing for cards */
     .cards-grid,
     .skills-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
     }
 
-    .project-card {
-        margin-bottom: 20px;
+    .modal {
+        padding: 10px;
     }
 
-    /* Floating elements performance - completely hide on mobile */
-    .floating-elements {
-        display: none !important;
-    }
-
-    /* Navigation improvements */
-    .nav-list {
-        gap: 4px;
-    }
-
-    /* Hero section adjustments */
-    .hero-content {
-        max-width: 100%;
-        padding: 0 8px;
-        text-align: center;
-    }
-
-    /* Skill progress bars - better visibility */
-    .skill-bar {
-        height: 10px;
-        border-radius: 5px;
-    }
-
-    .skill-progress {
-        border-radius: 5px;
-    }
-
-    /* Contact section improvements */
-    .contact-item {
-        flex-wrap: wrap;
-        gap: 16px;
-        align-items: center;
-    }
-
-    .contact-icon {
-        width: 36px;
-        height: 36px;
-        flex-shrink: 0;
-    }
-
-    .contact-icon svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* Project images */
-    .project-image {
-        width: 56px;
-        height: 56px;
-        margin-top: 24px;
-        margin-bottom: 20px;
-    }
-
-    .project-image svg {
-        width: 28px;
-        height: 28px;
-    }
-
-    /* Modal touch improvements */
-    .modal-close {
-        width: 44px;
-        height: 44px;
-        font-size: 24px;
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Download buttons */
-    .download-btn {
-        width: 100%;
-        justify-content: center;
-        min-height: 48px;
-    }
-
-    /* Tech stack wrapping */
-    .tech-stack {
-        justify-content: center;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
-    /* Better text readability */
-    .card-description,
-    .project-description,
-    .skill-description {
-        line-height: 1.7;
-    }
-
-    /* Ensure proper viewport handling */
-    .animated-bg {
-        transform: scale(1.2);
-        filter: blur(1px);
-    }
-
-    /* Improve card hover effects for touch */
-    .card:hover,
-    .skill-item:hover,
-    .project-card:hover {
-        transform: translateY(-2px);
-    }
-
-    /* Better button spacing */
-    .hero-cta,
-    .cv-buttons {
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    /* Improve modal scrolling */
     .modal-content {
-        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        max-height: 95vh;
+        margin: 0;
     }
 
-    /* Fix project card layout */
-    .project-card {
-        text-align: center;
+    .modal-header {
+        padding: 16px 20px;
     }
 
-    .project-card .project-image {
-        margin: 0 auto 20px auto;
+    .modal-title {
+        font-size: 20px;
     }
 
-    /* Better spacing for form elements */
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    /* Improve contact form styling */
-    .contact-form .btn {
-        width: 100%;
-        margin-top: 8px;
-    }
-}
-
-/* Extra small screens (under 320px) */
-@media (max-width: 320px) {
-    .section {
-        padding: 80px 12px 40px;
-    }
-
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-
-    .nav-item a {
-        padding: 8px 10px;
-        font-size: 11px;
-    }
-
-    .card,
-    .project-card,
-    .skill-item {
+    .modal-body {
         padding: 20px;
     }
 
-    .modal-content {
-        margin: 4px;
-        border-radius: 16px;
+    .modal-screenshots {
+        grid-template-columns: 1fr;
+        padding: 16px;
     }
 
-    .hero-cta .btn,
-    .btn-cv {
-        max-width: 260px;
+    .modal-downloads {
+        flex-direction: column;
     }
-}
 
-/* Mobile device specific improvements */
-.mobile-device {
-    -webkit-overflow-scrolling: touch;
-}
-
-.mobile-device .floating-elements {
-    display: none !important;
-}
-
-.mobile-device .modal-content {
-    -webkit-overflow-scrolling: touch;
-}
-
-.mobile-device .btn,
-.mobile-device .nav-link,
-.mobile-device .card {
-    transition: transform 0.1s ease;
-}
-
-/* Landscape mobile optimization */
-@media (max-height: 500px) and (orientation: landscape) {
-    .hero {
-        padding: 60px 20px 40px;
+    .download-btn {
+        width: 100%;
+        justify-content: center;
     }
-    
-    .hero-title {
-        font-size: 2.5rem;
-        margin-bottom: 12px;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem;
-        margin-bottom: 16px;
-    }
-    
-    .hero-description {
-        margin-bottom: 24px;
-    }
-    
-    .modal-content {
-        max-height: 90vh;
+
+    .tech-stack {
+        justify-content: center;
     }
 }
 
