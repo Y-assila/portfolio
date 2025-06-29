@@ -1,5 +1,6 @@
 // === INITIALIZATION === 
 document.addEventListener('DOMContentLoaded', function() {
+    initMobileOptimizations();
     initFloatingElements();
     initScrollIndicator();
     initSmoothScrolling();
@@ -11,15 +12,87 @@ document.addEventListener('DOMContentLoaded', function() {
     initImageLightbox();
 });
 
+// === MOBILE OPTIMIZATIONS ===
+function initMobileOptimizations() {
+    // Detect mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Add mobile class to body
+        document.body.classList.add('mobile-device');
+        
+        // Optimize touch events
+        optimizeTouchEvents();
+        
+        // Prevent zoom on double tap
+        preventDoubleZoom();
+        
+        // Optimize viewport for better mobile experience
+        optimizeViewport();
+    }
+}
+
+function optimizeTouchEvents() {
+    // Add touch feedback to interactive elements
+    const touchElements = document.querySelectorAll('.btn, .nav-link, .card, .skill-item, .project-card');
+    
+    touchElements.forEach(element => {
+        element.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        element.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+        }, { passive: true });
+    });
+}
+
+function preventDoubleZoom() {
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
+}
+
+function optimizeViewport() {
+    // Ensure viewport meta tag is properly set
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+        viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+    }
+    
+    // Handle orientation changes
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            window.scrollTo(0, 1);
+        }, 100);
+    });
+}
+
 // === FLOATING BACKGROUND ELEMENTS ===
 function initFloatingElements() {
     const container = document.getElementById('floatingElements');
     if (!container) return;
     
+    // Check if mobile device or small screen
+    const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Hide floating elements on mobile for better performance
+        container.style.display = 'none';
+        return;
+    }
+    
     // Clear existing elements
     container.innerHTML = '';
     
-    const elementCount = 25;
+    const elementCount = Math.min(25, Math.floor(window.innerWidth / 60)); // Adaptive count based on screen size
     
     // Create network nodes
     for (let i = 0; i < elementCount; i++) {
@@ -49,10 +122,12 @@ function initFloatingElements() {
         container.appendChild(element);
     }
     
-    // Create connection lines
-    setTimeout(() => {
-        createNetworkConnections();
-    }, 1000);
+    // Create connection lines only on larger screens
+    if (window.innerWidth > 1024) {
+        setTimeout(() => {
+            createNetworkConnections();
+        }, 1000);
+    }
 }
 
 function createNetworkConnections() {
@@ -296,7 +371,60 @@ function initProjectModals() {
                 closeProjectModal();
             }
         });
+        
+        // Enhanced mobile modal handling
+        enhanceMobileModalExperience(modal);
     }
+}
+
+function enhanceMobileModalExperience(modal) {
+    const modalContent = modal.querySelector('.modal-content');
+    if (!modalContent) return;
+    
+    // Prevent body scroll when modal is open
+    modal.addEventListener('show', () => {
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+    });
+    
+    modal.addEventListener('hide', () => {
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+    });
+    
+    // Add swipe down to close on mobile
+    let startY = 0;
+    let currentY = 0;
+    let isDragging = false;
+    
+    modalContent.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+    }, { passive: true });
+    
+    modalContent.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentY = e.touches[0].clientY;
+        const diffY = currentY - startY;
+        
+        if (diffY > 0) {
+            modalContent.style.transform = `translateY(${diffY * 0.5}px)`;
+        }
+    }, { passive: true });
+    
+    modalContent.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        const diffY = currentY - startY;
+        if (diffY > 100) {
+            closeProjectModal();
+        } else {
+            modalContent.style.transform = '';
+        }
+    }, { passive: true });
 }
 
 // === PROJECT MODAL CONTENT ===
@@ -895,14 +1023,31 @@ class ReportGenerator:
         modalTitle.textContent = project.title;
         modalBody.innerHTML = project.content;
         modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
+        
+        // Trigger show event for mobile enhancements
+        modal.dispatchEvent(new Event('show'));
+        
+        // Scroll to top of modal content
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.scrollTop = 0;
+        }
     }
 }
 
 function closeProjectModal() {
     const modal = document.getElementById('projectModal');
+    
+    // Trigger hide event for mobile enhancements
+    modal.dispatchEvent(new Event('hide'));
+    
     modal.classList.remove('show');
-    document.body.style.overflow = 'auto';
+    
+    // Reset any transforms from mobile gestures
+    const modalContent = modal.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.style.transform = '';
+    }
 }
 
 // === IMAGE LIGHTBOX ===

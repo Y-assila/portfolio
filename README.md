@@ -6,16 +6,17 @@ A modern, responsive portfolio website showcasing my expertise in Network & Cybe
 
 ### 🎨 Design & UX
 - **Modern UI/UX**: Clean, professional design with a cybersecurity/networking theme
-- **Dark/Light Mode Toggle**: Seamless theme switching with local storage persistence
+- **Dark Theme**: Professional dark theme with glassmorphism effects
 - **Responsive Design**: Optimized for all devices (desktop, tablet, mobile)
 - **Smooth Animations**: CSS animations, hover effects, and transitions
-- **Interactive Elements**: Animated progress bars, typing effects, and hover animations
+- **Interactive Elements**: Animated progress bars, networking background, and hover animations
 
 ### 📱 Pages & Sections
-- **Home Page**: Hero section with animated background, skills preview, featured projects
-- **About Page**: Detailed background, technical skills with progress bars, soft skills, languages
-- **Projects Page**: Detailed project showcase with technology tags and descriptions
-- **Contact Page**: Interactive contact form with animated buttons and social links
+- **Single Page Portfolio**: Modern one-page design with smooth scrolling navigation
+- **Hero Section**: Animated background with professional introduction
+- **About Section**: Detailed background with skills and experience
+- **Projects Section**: Featured projects with detailed modal previews
+- **Contact Section**: Working contact form with Formspree integration
 
 ### 🛠 Technical Highlights
 - **Pure HTML/CSS/JavaScript**: No frameworks, lightweight and fast
@@ -28,19 +29,17 @@ A modern, responsive portfolio website showcasing my expertise in Network & Cybe
 
 ```
 personal-portfolio/
-├── index.html                      # Homepage with hero section
-├── about.html                      # About page with skills and background
-├── projects.html                   # Projects showcase
-├── contact.html                    # Contact form and information
-├── project-sdn.html               # SDN Attack Detection project details
-├── project-management-app.html    # Management App project details
-├── style.css                      # Main stylesheet with all styling
-├── cv-en.pdf                      # English CV download
-├── cv-fr.pdf                      # French CV download
-├── reports/                       # Project reports
+├── index.html                      # Single-page portfolio with all sections
+├── styles.css                      # Main stylesheet with glassmorphism styling
+├── script.js                       # Interactive functionality and project modals
+├── cv-en.pdf                       # English CV download
+├── cv-fr.pdf                       # French CV download
+├── CNAME                           # Custom domain configuration
+├── .gitignore                      # Git ignore rules
+├── reports/                        # Project reports
 │   ├── management-app-report.pdf
 │   └── sdn-attack-detection-report.pdf
-└── screenshots/                   # Project screenshots
+└── screenshots/                    # Project screenshots
     ├── alert-email.jpg
     ├── management-dashboard.jpg
     ├── mininet-topology.png
@@ -53,15 +52,15 @@ personal-portfolio/
 
 ### Frontend
 - **HTML5**: Semantic markup, accessibility features
-- **CSS3**: Flexbox, Grid, animations, gradients, backdrop filters
-- **JavaScript (ES6+)**: Theme toggle, smooth scrolling, form handling
-- **Google Fonts**: Poppins font family for modern typography
+- **CSS3**: Flexbox, Grid, animations, gradients, glassmorphism effects
+- **JavaScript (ES6+)**: Interactive functionality, form handling, modal system
+- **Google Fonts**: Inter font family for modern typography
 
 ### Design Elements
-- **SVG Icons**: Heroicons for consistent iconography
-- **Animated Backgrounds**: Network topology visualizations
-- **Gradient Effects**: Modern color schemes with teal/blue palette
-- **Interactive Components**: Hover effects, progress bars, typing animations
+- **SVG Icons**: Custom SVG icons for consistent iconography
+- **Animated Backgrounds**: Dynamic networking topology visualizations
+- **Glassmorphism Effects**: Modern translucent design with backdrop filters
+- **Interactive Components**: Hover effects, progress bars, project modals
 
 ## 🎯 Key Projects Featured
 
@@ -75,10 +74,10 @@ personal-portfolio/
 - **Features**: Supplier management, PDF/Excel reporting, role-based access
 - **Skills Demonstrated**: Web development, database design, report generation
 
-### 3. Network Infrastructure Design
-- **Technologies**: Cisco equipment, OSPF, VLANs, VPN
-- **Features**: Multi-site connectivity, security policies, performance optimization
-- **Skills Demonstrated**: Network architecture, security implementation
+### 3. SDN + AI-Based Cybersecurity Project (Coming Soon)
+- **Technologies**: SDN, AI/ML, Ryu Controller, scikit-learn, Mininet  
+- **Features**: Intelligent firewall with real-time threat detection and AI analytics
+- **Skills Demonstrated**: Advanced network security, machine learning, research and development
 
 ## 🌍 Professional Skills
 
@@ -114,12 +113,12 @@ personal-portfolio/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Y-assila/personal-portfolio.git
+   git clone https://github.com/Y-assila/portfolio.git
    ```
 
 2. **Open in browser**:
    ```bash
-   cd personal-portfolio
+   cd portfolio
    open index.html
    ```
 
