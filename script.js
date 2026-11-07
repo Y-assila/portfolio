@@ -1,1173 +1,523 @@
-// === INITIALIZATION === 
-document.addEventListener('DOMContentLoaded', function() {
-    initFloatingElements();
-    initScrollIndicator();
-    initSmoothScrolling();
-    initSkillProgressBars();
-    initCursorTrail();
-    initScrollAnimations();
-    initFormHandling();
-    initProjectModals();
-    initImageLightbox();
-});
+(async () => {
+  "use strict";
 
-// === FLOATING BACKGROUND ELEMENTS ===
-function initFloatingElements() {
-    const container = document.getElementById('floatingElements');
-    if (!container) return;
-    
-    // Clear existing elements
-    container.innerHTML = '';
-    
-    const elementCount = 25;
-    
-    // Create network nodes
-    for (let i = 0; i < elementCount; i++) {
-        const element = document.createElement('div');
-        element.className = 'floating-element';
-        
-        const startX = Math.random() * window.innerWidth;
-        const delay = Math.random() * 15;
-        const duration = Math.random() * 10 + 15;
-        
-        element.style.left = startX + 'px';
-        element.style.animationDelay = delay + 's';
-        element.style.animationDuration = duration + 's';
-        
-        // Add different types of network nodes
-        if (i % 3 === 0) {
-            element.style.background = '#007AFF';
-            element.style.boxShadow = '0 0 15px rgba(0, 122, 255, 0.8)';
-        } else if (i % 3 === 1) {
-            element.style.background = '#5856D6';
-            element.style.boxShadow = '0 0 15px rgba(88, 86, 214, 0.8)';
-        } else {
-            element.style.background = '#30D158';
-            element.style.boxShadow = '0 0 15px rgba(48, 209, 88, 0.8)';
-        }
-        
-        container.appendChild(element);
-    }
-    
-    // Create connection lines
-    setTimeout(() => {
-        createNetworkConnections();
-    }, 1000);
-}
+  const D = window.PORTFOLIO;
+  try {
+    const res = await fetch("content.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error(res.status);
+    const content = await res.json();
+    D.now = content.now;
+    D.projects = content.projects || [];
+  } catch (_) {
+    D.now = { updated: "", items: [] };
+    D.projects = [];
+  }
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const esc = (v) =>
+    String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const safeUrl = (u) => (/^(https?:|mailto:|tel:|[\w./-]+$)/i.test(u) ? esc(u) : "#");
 
-function createNetworkConnections() {
-    const container = document.getElementById('floatingElements');
-    if (!container) return;
-    
-    // Create some static connection lines
-    for (let i = 0; i < 8; i++) {
-        const connection = document.createElement('div');
-        connection.style.position = 'absolute';
-        connection.style.width = Math.random() * 200 + 100 + 'px';
-        connection.style.height = '1px';
-        connection.style.background = `linear-gradient(90deg, transparent, rgba(0, 123, 255, ${Math.random() * 0.3 + 0.2}), transparent)`;
-        connection.style.left = Math.random() * window.innerWidth + 'px';
-        connection.style.top = Math.random() * window.innerHeight + 'px';
-        connection.style.transform = `rotate(${Math.random() * 360}deg)`;
-        connection.style.animation = `connectionPulse ${Math.random() * 3 + 2}s infinite ease-in-out`;
-        connection.style.transformOrigin = 'center';
-        connection.style.pointerEvents = 'none';
-        connection.style.zIndex = '-1';
-        
-        container.appendChild(connection);
-    }
-}
+  const ICONS = {
+    network: '<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v4m0 0l-5.5 5.5M12 11.5l5.5 5.5"/>',
+    server: '<rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/>',
+    shield: '<path d="M12 2L4 5.5v6c0 5 3.4 8.8 8 10.5 4.6-1.7 8-5.5 8-10.5v-6L12 2z"/><path d="M9 12l2 2 4-4"/>',
+    code: '<path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/>',
+    cloud: '<path d="M7 18a4.5 4.5 0 1 1 .9-8.9A6 6 0 0 1 19.5 11 3.5 3.5 0 0 1 18 18H7z"/>',
+    tool: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.6-.6-.6-2.6 2.6-2.2z"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+    phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+    pin: '<path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+    linkedin: '<path d="M4 9h4v11H4zM6 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM10 9h3.8v1.6c.7-1.2 2-1.9 3.6-1.9 3 0 3.6 2 3.6 4.6V20h-4v-5.6c0-1.3 0-2.9-1.8-2.9S14 12.8 14 14.3V20h-4z"/>',
+    github: '<path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
+    external: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+    file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+    chevron: '<path d="M6 9l6 6 6-6"/>'
+  };
+  const icon = (n, s = 20) =>
+    `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ""}</svg>`;
 
-// === SCROLL PROGRESS INDICATOR ===
-function initScrollIndicator() {
-    const indicator = document.getElementById('scrollIndicator');
-    
-    window.addEventListener('scroll', () => {
-        const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-        indicator.style.width = scrolled + '%';
-    });
-}
-
-// === SMOOTH SCROLLING NAVIGATION ===
-function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.section');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-            
-            // Update active link
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
+  /* ---------- Reveal on scroll ---------- */
+  const io = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
         });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" })
+    : null;
+  const watch = (root = document) =>
+    $$(".reveal:not(.in)", root).forEach((el, i) => {
+      if (!io) return el.classList.add("in");
+      if (!el.style.getPropertyValue("--d")) el.style.setProperty("--d", `${Math.min(i % 6, 5) * 70}ms`);
+      io.observe(el);
     });
-    
-    // Update active link on scroll
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (window.scrollY >= sectionTop - 200) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').substring(1) === current) {
-                link.classList.add('active');
-            }
-        });
-    });
-}
+  const wrap = (html, extra = "") => `<div class="reveal ${extra}">${html}</div>`;
 
-// === SKILL PROGRESS BARS ===
-function initSkillProgressBars() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const progressBars = entry.target.querySelectorAll('.skill-progress');
-                progressBars.forEach(bar => {
-                    const progress = bar.getAttribute('data-progress');
-                    setTimeout(() => {
-                        bar.style.width = progress + '%';
-                    }, 200);
-                });
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    const skillsSection = document.getElementById('skills');
-    if (skillsSection) {
-        observer.observe(skillsSection);
+  /* ---------- Hero ---------- */
+  function renderHero() {
+    const p = D.profile;
+    $("#heroName").textContent = p.name;
+    $("#heroSummary").textContent = p.summary;
+    $("#logoMark").textContent = p.initials;
+    const av = $("#availability");
+    av.classList.toggle("off", !p.available);
+    $("#availabilityText").textContent = p.availableText;
+    $("#cvEn").href = p.cv.en;
+    $("#cvFr").href = p.cv.fr;
+    $("#heroSocials").innerHTML = [
+      ["github", `https://github.com/${p.github}`, "GitHub"],
+      ["linkedin", p.linkedin, "LinkedIn"],
+      ["mail", `mailto:${p.email}`, "Email"]
+    ].map(([i, u, l]) => `<a class="social" href="${safeUrl(u)}" target="_blank" rel="noopener" aria-label="${l}" title="${l}">${icon(i, 18)}</a>`).join("");
+    $("#year").textContent = new Date().getFullYear();
+    $("#ghProfileLink").href = `https://github.com/${p.github}?tab=repositories`;
+
+    typeRoles(p.typing);
+    runTerminal();
+  }
+
+  function typeRoles(list) {
+    const el = $("#typing");
+    if (reduceMotion) { el.textContent = list[0]; return; }
+    let i = 0, j = 0, del = false;
+    (function tick() {
+      const word = list[i];
+      el.textContent = word.slice(0, j);
+      let wait = del ? 35 : 70;
+      if (!del && j === word.length) { del = true; wait = 1600; }
+      else if (del && j === 0) { del = false; i = (i + 1) % list.length; wait = 350; }
+      else j += del ? -1 : 1;
+      setTimeout(tick, wait);
+    })();
+  }
+
+  function runTerminal() {
+    const p = D.profile;
+    const body = $("#terminalBody");
+    const kv = (k, v) => `<span class="t-key">${esc(k)}</span>: <span class="t-val">${esc(v)}</span>`;
+    const script = [
+      { cmd: "whoami", out: [`<span class="t-ok">${esc(p.name)}</span>`] },
+      { cmd: "cat profile.yml", out: [kv("role", p.role), kv("location", p.location), kv("status", p.available ? "available ✔" : "busy")] },
+      { cmd: "ls ~/skills", out: [D.skills.map((s) => s.group.toLowerCase()).join("  ")] },
+      { cmd: "./now.sh", out: D.now.items.map((n) => `<span class="t-dim">[${esc(n.title.toLowerCase())}]</span> ${esc(n.headline)}`) }
+    ];
+    const prompt = '<span class="t-ps">yassine@portfolio</span>:<span class="t-key">~</span>$ ';
+    if (reduceMotion) {
+      body.innerHTML = script.map((s) => `${prompt}<span class="t-cmd">${s.cmd}</span>\n${s.out.join("\n")}\n`).join("");
+      return;
     }
-}
-
-// === CURSOR TRAIL EFFECT ===
-function initCursorTrail() {
-    let mouseX = 0;
-    let mouseY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        // Create subtle trail on mouse move
-        if (window.innerWidth > 768 && Math.random() > 0.8) {
-            createTrail(e.clientX, e.clientY, 'move');
+    let html = "";
+    (async function play() {
+      for (const s of script) {
+        for (let k = 0; k <= s.cmd.length; k++) {
+          body.innerHTML = `${html}${prompt}<span class="t-cmd">${s.cmd.slice(0, k)}</span><span class="caret"></span>`;
+          await sleep(55);
         }
-    });
-    
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth > 768) {
-            createTrail(e.clientX, e.clientY, 'click');
-            // Create multiple trails for click effect
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => {
-                    createTrail(
-                        e.clientX + (Math.random() - 0.5) * 20,
-                        e.clientY + (Math.random() - 0.5) * 20,
-                        'click'
-                    );
-                }, i * 100);
-            }
-        }
-    });
-    
-    function createTrail(x, y, type = 'move') {
-        const trail = document.createElement('div');
-        trail.className = 'cursor-trail';
-        
-        if (type === 'click') {
-            trail.style.background = 'radial-gradient(circle, var(--primary-color), var(--secondary-color), transparent)';
-            trail.style.width = '30px';
-            trail.style.height = '30px';
-            trail.style.left = x - 15 + 'px';
-            trail.style.top = y - 15 + 'px';
-        } else {
-            trail.style.left = x - 10 + 'px';
-            trail.style.top = y - 10 + 'px';
-        }
-        
-        document.body.appendChild(trail);
-        
-        setTimeout(() => {
-            if (document.body.contains(trail)) {
-                document.body.removeChild(trail);
-            }
-        }, 800);
-    }
-}
+        await sleep(250);
+        html += `${prompt}<span class="t-cmd">${s.cmd}</span>\n${s.out.join("\n")}\n`;
+        body.innerHTML = html;
+        await sleep(450);
+      }
+      body.innerHTML = `${html}${prompt}<span class="caret"></span>`;
+    })();
+  }
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// === SCROLL ANIMATIONS ===
-function initScrollAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    const animatedElements = document.querySelectorAll('.card, .skill-item, .project-card');
-    animatedElements.forEach(el => observer.observe(el));
-}
+  /* ---------- Stats ---------- */
+  function renderStats() {
+    $("#statsGrid").innerHTML = D.stats
+      .map((s) => `<div class="stat reveal"><div class="stat-value" data-to="${s.value}" data-suffix="${esc(s.suffix || "")}">0${esc(s.suffix || "")}</div><div class="stat-label">${esc(s.label)}</div></div>`)
+      .join("");
+    const counter = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        counter.unobserve(e.target);
+        const el = e.target, to = +el.dataset.to, suf = el.dataset.suffix;
+        if (reduceMotion) { el.textContent = to + suf; return; }
+        const t0 = performance.now(), dur = 1400;
+        (function step(t) {
+          const k = Math.min((t - t0) / dur, 1);
+          el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))) + suf;
+          if (k < 1) requestAnimationFrame(step);
+        })(t0);
+      });
+    }, { threshold: 0.6 });
+    $$(".stat-value").forEach((el) => counter.observe(el));
+  }
 
-// === FORM HANDLING ===
-function initFormHandling() {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(contactForm);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const message = formData.get('message');
-            
-            // Basic validation
-            if (!name || !email || !message) {
-                showNotification('Please fill in all required fields.', 'error');
-                return;
-            }
-            
-            // Show loading state
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.querySelector('span').textContent;
-            submitBtn.disabled = true;
-            submitBtn.querySelector('span').textContent = 'Sending...';
-            
-            try {
-                // Submit to Formspree
-                const response = await fetch(contactForm.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
-                    contactForm.reset();
-                } else {
-                    throw new Error('Failed to send message');
-                }
-            } catch (error) {
-                showNotification('Failed to send message. Please try again later.', 'error');
-                console.error('Form submission error:', error);
-            } finally {
-                // Reset button state
-                submitBtn.disabled = false;
-                submitBtn.querySelector('span').textContent = originalBtnText;
-            }
-        });
-    }
-}
+  /* ---------- Now ---------- */
+  function renderNow() {
+    const d = new Date(D.now.updated + "T00:00:00");
+    $("#nowUpdated").textContent = isNaN(d) ? "" : `Updated ${d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`;
+    $("#nowGrid").innerHTML = D.now.items
+      .map((n) => wrap(`
+        <article class="card now-card" data-kind="${esc(n.kind)}">
+          <div class="now-label"><span class="pulse"></span>${esc(n.title)}</div>
+          <h3>${esc(n.headline)}</h3>
+          <p>${esc(n.text)}</p>
+          <div class="chips">${(n.tags || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+        </article>`))
+      .join("");
+  }
 
-// === PROJECT MODALS ===
-function initProjectModals() {
-    // Modal close functionality
-    const modal = document.getElementById('projectModal');
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeProjectModal();
-            }
-        });
-        
-        // Close on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('show')) {
-                closeProjectModal();
-            }
-        });
-    }
-}
+  /* ---------- About ---------- */
+  function renderAbout() {
+    const a = D.about, p = D.profile;
+    $("#aboutBody").innerHTML =
+      a.paragraphs.map((t) => `<p>${esc(t)}</p>`).join("") +
+      `<div class="facts">${a.facts.map((f) => `<div class="card fact"><b>${esc(f.label)}</b><span>${esc(f.value)}</span></div>`).join("")}</div>` +
+      `<div class="langs">${p.languages.map((l) => `<div class="lang">${esc(l.name)}<span>${esc(l.level)}</span></div>`).join("")}</div>`;
+  }
 
-// === PROJECT MODAL CONTENT ===
-function openProjectModal(projectType) {
-    const modal = document.getElementById('projectModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalBody = document.getElementById('modalBody');
-    
-    const projectData = {
-        sdn: {
-            title: 'SDN Attack Detection & Response System',
-            content: `
-                <h2>Project Overview</h2>
-                <p>A comprehensive Software-Defined Networking (SDN) security solution that provides real-time network threat detection and automated response capabilities. This system demonstrates advanced network security concepts using modern SDN technologies.</p>
-                
-                <div class="modal-highlight">
-                    <p><strong>Key Achievement:</strong> Successfully detected and mitigated ICMP flood attacks in under 2 seconds with 99.7% accuracy rate.</p>
-                </div>
-                
-                <h2>Technical Architecture</h2>
-                
-                <h3>SDN Controller Implementation</h3>
-                <p>Built using the Ryu SDN framework, the controller monitors network traffic patterns and implements dynamic security policies:</p>
-                <ul>
-                    <li><strong>Flow Table Management:</strong> Real-time OpenFlow rule installation and modification</li>
-                    <li><strong>Packet Inspection:</strong> Deep packet analysis for threat identification</li>
-                    <li><strong>Traffic Statistics:</strong> Continuous monitoring of network flow metrics</li>
-                    <li><strong>Policy Enforcement:</strong> Automated security rule deployment</li>
-                </ul>
-                
-                <h3>Attack Detection Algorithm</h3>
-                <p>The system employs a sophisticated detection mechanism:</p>
-                <ul>
-                    <li><strong>Threshold-based Detection:</strong> Configurable packet rate thresholds</li>
-                    <li><strong>Pattern Recognition:</strong> Statistical analysis of traffic patterns</li>
-                    <li><strong>Machine Learning Integration:</strong> Adaptive learning for false positive reduction</li>
-                    <li><strong>Multi-vector Analysis:</strong> Protocol-specific attack detection</li>
-                </ul>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Python 3.8+</span>
-                    <span class="tech-tag">Ryu SDN Framework</span>
-                    <span class="tech-tag">OpenFlow 1.3</span>
-                    <span class="tech-tag">Mininet Network Emulator</span>
-                    <span class="tech-tag">SMTP Integration</span>
-                    <span class="tech-tag">JSON Logging</span>
-                </div>
-                
-                <h2>Network Topology</h2>
-                <p>The testing environment consists of a carefully designed network topology that simulates real-world enterprise scenarios:</p>
-                
-                <div class="modal-screenshots">
-                    <img src="screenshots/sdn-architecture.png" alt="SDN Network Architecture" title="SDN Network Architecture Overview">
-                    <img src="screenshots/mininet-topology.png" alt="Mininet Network Topology" title="Mininet Testing Environment">
-                    <img src="screenshots/sdn-architecture-detailed.png" alt="Detailed SDN Architecture" title="Detailed SDN Architecture Diagram">
-                </div>
-                
-                <h2>Key Features</h2>
-                
-                <h3>Real-time Threat Detection</h3>
-                <ul>
-                    <li><strong>ICMP Flood Detection:</strong> Identifies excessive ping requests targeting network resources</li>
-                    <li><strong>DDoS Mitigation:</strong> Automatically blocks malicious traffic sources</li>
-                    <li><strong>Bandwidth Monitoring:</strong> Tracks unusual bandwidth consumption patterns</li>
-                    <li><strong>Port Scanning Detection:</strong> Identifies reconnaissance activities</li>
-                </ul>
-                
-                <h3>Automated Response System</h3>
-                <ul>
-                    <li><strong>Dynamic Flow Rules:</strong> Instant deployment of blocking rules</li>
-                    <li><strong>Traffic Redirection:</strong> Rerouting of suspicious traffic for analysis</li>
-                    <li><strong>Rate Limiting:</strong> Bandwidth throttling for identified threats</li>
-                    <li><strong>Quarantine Zones:</strong> Isolation of compromised network segments</li>
-                </ul>
-                
-                <h3>Alert & Notification System</h3>
-                <ul>
-                    <li><strong>Email Alerts:</strong> Immediate notification to security administrators</li>
-                    <li><strong>Detailed Reporting:</strong> Comprehensive attack analysis and metrics</li>
-                    <li><strong>Log Management:</strong> Structured logging for forensic analysis</li>
-                    <li><strong>Dashboard Integration:</strong> Real-time security status visualization</li>
-                </ul>
-                
-                <div class="modal-screenshots">
-                    <img src="screenshots/alert-email.jpg" alt="Security Alert Email" title="Automated Security Alert Email">
-                </div>
-                
-                <h2>Performance Metrics</h2>
-                <p>The system has been extensively tested and demonstrates exceptional performance:</p>
-                <ul>
-                    <li><strong>Detection Latency:</strong> < 2 seconds from attack initiation</li>
-                    <li><strong>Response Time:</strong> < 1 second for rule deployment</li>
-                    <li><strong>Accuracy Rate:</strong> 99.7% true positive detection</li>
-                    <li><strong>False Positive Rate:</strong> < 0.1% under normal traffic conditions</li>
-                    <li><strong>Throughput Impact:</strong> < 5% performance overhead</li>
-                    <li><strong>Scalability:</strong> Supports networks up to 1000+ endpoints</li>
-                </ul>
-                
-                <h2>Implementation Details</h2>
-                
-                <h3>Controller Architecture</h3>
-                <pre><code>class AttackDetectionController(app_manager.RyuApp):
-    OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
-    
-    def __init__(self, *args, **kwargs):
-        super(AttackDetectionController, self).__init__(*args, **kwargs)
-        self.mac_to_port = {}
-        self.packet_count = {}
-        self.threshold = 100  # packets per second
-        self.alert_system = EmailAlertSystem()
-    
-    @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
-    def packet_in_handler(self, ev):
-        # Packet analysis and threat detection logic
-        if self.detect_icmp_flood(pkt, in_port):
-            self.block_malicious_traffic(src_ip)
-            self.send_security_alert(src_ip, attack_type)</code></pre>
-                
-                <h3>Detection Algorithm</h3>
-                <pre><code>def detect_icmp_flood(self, packet, source_port):
-    current_time = time.time()
-    source_ip = packet.src
-    
-    # Update packet statistics
-    if source_ip not in self.packet_stats:
-        self.packet_stats[source_ip] = []
-    
-    self.packet_stats[source_ip].append(current_time)
-    
-    # Remove old entries (outside time window)
-    time_window = 10  # seconds
-    self.packet_stats[source_ip] = [
-        timestamp for timestamp in self.packet_stats[source_ip]
-        if current_time - timestamp <= time_window
-    ]
-    
-    # Check if threshold exceeded
-    packet_rate = len(self.packet_stats[source_ip]) / time_window
-    return packet_rate > self.threshold</code></pre>
-                
-                <h2>Security Analysis & Results</h2>
-                <p>Comprehensive testing has validated the system's effectiveness across various attack scenarios:</p>
-                
-                <h3>Attack Scenarios Tested</h3>
-                <ul>
-                    <li><strong>ICMP Flood Attacks:</strong> Various intensities from 50-10,000 packets/second</li>
-                    <li><strong>Distributed Attacks:</strong> Multi-source coordinated attacks</li>
-                    <li><strong>Low-and-Slow Attacks:</strong> Stealthy, prolonged attack patterns</li>
-                    <li><strong>Protocol-specific Attacks:</strong> TCP SYN floods, UDP floods</li>
-                </ul>
-                
-                <h3>Detection Accuracy</h3>
-                <ul>
-                    <li><strong>High-intensity Attacks:</strong> 100% detection rate</li>
-                    <li><strong>Medium-intensity Attacks:</strong> 99.8% detection rate</li>
-                    <li><strong>Low-intensity Attacks:</strong> 98.5% detection rate</li>
-                    <li><strong>False Positives:</strong> 0.08% during peak traffic periods</li>
-                </ul>
-                
-                <div class="modal-downloads">
-                    <a href="reports/sdn-attack-detection-report.pdf" download class="download-btn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7,10 12,15 17,10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Download Technical Report
-                    </a>
-                </div>
-                
-                <h2>Future Enhancements</h2>
-                <p>Planned improvements and additional features:</p>
-                <ul>
-                    <li><strong>AI/ML Integration:</strong> Advanced anomaly detection using neural networks</li>
-                    <li><strong>Behavioral Analysis:</strong> User and device behavior profiling</li>
-                    <li><strong>Multi-protocol Support:</strong> Extended coverage for IoT protocols</li>
-                    <li><strong>Cloud Integration:</strong> Hybrid cloud-SDN security orchestration</li>
-                    <li><strong>Threat Intelligence:</strong> Integration with external threat feeds</li>
-                    <li><strong>Automated Forensics:</strong> Enhanced incident response capabilities</li>
-                </ul>
-                
-                <p>This project demonstrates the practical application of SDN technologies in cybersecurity, showcasing both technical depth and real-world applicability in enterprise network security scenarios.</p>
-            `
-        },
-        management: {
-            title: 'Enterprise Management Platform',
-            content: `
-                <h2>Project Overview</h2>
-                <p>A comprehensive enterprise management system designed to streamline procurement processes, inventory management, and financial reporting. This platform demonstrates full-stack development capabilities with a focus on business process automation and data analytics.</p>
-                
-                <div class="modal-highlight">
-                    <p><strong>Business Impact:</strong> Reduced procurement processing time by 75% and eliminated manual reporting errors, saving 20+ hours per week in administrative tasks.</p>
-                </div>
-                
-                <h2>System Architecture</h2>
-                
-                <h3>Backend Infrastructure</h3>
-                <p>Built on a robust Flask framework with modular architecture for scalability and maintainability:</p>
-                <ul>
-                    <li><strong>Flask Application:</strong> RESTful API design with blueprint organization</li>
-                    <li><strong>SQLite Database:</strong> Optimized relational database schema</li>
-                    <li><strong>ORM Integration:</strong> SQLAlchemy for database abstraction</li>
-                    <li><strong>Authentication System:</strong> Role-based access control (RBAC)</li>
-                </ul>
-                
-                <h3>Frontend Interface</h3>
-                <p>Modern, responsive web interface built with attention to user experience:</p>
-                <ul>
-                    <li><strong>Responsive Design:</strong> Mobile-first approach with Bootstrap framework</li>
-                    <li><strong>Interactive Dashboard:</strong> Real-time data visualization with Chart.js</li>
-                    <li><strong>Dynamic Forms:</strong> AJAX-powered form submissions</li>
-                    <li><strong>Progressive Enhancement:</strong> Graceful degradation for older browsers</li>
-                </ul>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Python Flask</span>
-                    <span class="tech-tag">SQLite</span>
-                    <span class="tech-tag">SQLAlchemy ORM</span>
-                    <span class="tech-tag">ReportLab PDF</span>
-                    <span class="tech-tag">Pandas Analytics</span>
-                    <span class="tech-tag">Bootstrap 5</span>
-                    <span class="tech-tag">Chart.js</span>
-                    <span class="tech-tag">JWT Authentication</span>
-                </div>
-                
-                <h2>Core Features</h2>
-                
-                <h3>Procurement Management</h3>
-                <ul>
-                    <li><strong>Purchase Requisitions:</strong> Digital workflow from request to approval</li>
-                    <li><strong>Vendor Management:</strong> Comprehensive supplier database with performance tracking</li>
-                    <li><strong>Quote Comparison:</strong> Multi-vendor bidding and evaluation system</li>
-                    <li><strong>Contract Management:</strong> Digital contract storage and renewal tracking</li>
-                    <li><strong>Approval Workflows:</strong> Configurable multi-level approval processes</li>
-                </ul>
-                
-                <h3>Inventory Control</h3>
-                <ul>
-                    <li><strong>Real-time Tracking:</strong> Live inventory levels across multiple locations</li>
-                    <li><strong>Automated Reordering:</strong> Smart reorder points based on usage patterns</li>
-                    <li><strong>Asset Management:</strong> Complete asset lifecycle tracking</li>
-                    <li><strong>Barcode Integration:</strong> QR code generation and scanning capabilities</li>
-                    <li><strong>Stock Alerts:</strong> Low stock and expiration date notifications</li>
-                </ul>
-                
-                <h3>Financial Reporting</h3>
-                <ul>
-                    <li><strong>Automated Reports:</strong> Scheduled PDF report generation</li>
-                    <li><strong>Budget Tracking:</strong> Real-time budget vs. actual spending analysis</li>
-                    <li><strong>Cost Center Analysis:</strong> Department-wise expense tracking</li>
-                    <li><strong>Trend Analysis:</strong> Historical spending pattern identification</li>
-                    <li><strong>Compliance Reporting:</strong> Audit-ready financial documentation</li>
-                </ul>
-                
-                <div class="modal-screenshots">
-                    <img src="screenshots/management-dashboard.jpg" alt="Management Dashboard" title="Main Management Dashboard Interface">
-                    <img src="screenshots/pdf-report.png" alt="PDF Report Sample" title="Automated PDF Report Generation">
-                </div>
-                
-                <h2>Database Design</h2>
-                
-                <h3>Entity Relationship Model</h3>
-                <p>Normalized database schema designed for optimal performance and data integrity:</p>
-                
-                <pre><code>-- Core Tables Structure
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR(80) UNIQUE NOT NULL,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    password_hash VARCHAR(128),
-    role_id INTEGER,
-    department_id INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE purchase_requests (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    request_number VARCHAR(50) UNIQUE NOT NULL,
-    requester_id INTEGER,
-    department_id INTEGER,
-    status VARCHAR(20) DEFAULT 'pending',
-    total_amount DECIMAL(10,2),
-    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    approval_date TIMESTAMP
-);
-
-CREATE TABLE inventory_items (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    item_code VARCHAR(50) UNIQUE NOT NULL,
-    description TEXT,
-    category_id INTEGER,
-    current_stock INTEGER DEFAULT 0,
-    reorder_level INTEGER DEFAULT 10,
-    unit_price DECIMAL(8,2),
-    location VARCHAR(100)
-);</code></pre>
-                
-                <h3>Performance Optimization</h3>
-                <ul>
-                    <li><strong>Indexing Strategy:</strong> Optimized indexes on frequently queried columns</li>
-                    <li><strong>Query Optimization:</strong> Efficient SQL queries with proper joins</li>
-                    <li><strong>Caching Layer:</strong> Redis integration for frequently accessed data</li>
-                    <li><strong>Connection Pooling:</strong> Database connection management</li>
-                </ul>
-                
-                <h2>Advanced Analytics</h2>
-                
-                <h3>Business Intelligence Dashboard</h3>
-                <p>Comprehensive analytics providing actionable business insights:</p>
-                <ul>
-                    <li><strong>Spending Analytics:</strong> Trend analysis and budget variance reporting</li>
-                    <li><strong>Supplier Performance:</strong> Vendor scorecards and performance metrics</li>
-                    <li><strong>Inventory Optimization:</strong> Stock turnover and carrying cost analysis</li>
-                    <li><strong>Process Efficiency:</strong> Workflow bottleneck identification</li>
-                </ul>
-                
-                <h3>Predictive Analytics</h3>
-                <ul>
-                    <li><strong>Demand Forecasting:</strong> ML-based inventory demand prediction</li>
-                    <li><strong>Budget Planning:</strong> Historical data-driven budget recommendations</li>
-                    <li><strong>Risk Assessment:</strong> Supplier risk and market volatility analysis</li>
-                    <li><strong>Cost Optimization:</strong> Automated cost-saving opportunity identification</li>
-                </ul>
-                
-                <h2>Security Implementation</h2>
-                
-                <h3>Authentication & Authorization</h3>
-                <pre><code>from flask_jwt_extended import JWTManager, create_access_token
-from werkzeug.security import generate_password_hash, check_password_hash
-
-class AuthenticationManager:
-    def __init__(self, app):
-        self.jwt = JWTManager(app)
-        self.app = app
-    
-    def authenticate_user(self, username, password):
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password_hash, password):
-            access_token = create_access_token(
-                identity=user.id,
-                additional_claims={
-                    'role': user.role.name,
-                    'department': user.department.name
-                }
-            )
-            return {'access_token': access_token, 'user': user}
-        return None</code></pre>
-                
-                <h3>Data Protection</h3>
-                <ul>
-                    <li><strong>Encryption:</strong> AES-256 encryption for sensitive data</li>
-                    <li><strong>Input Validation:</strong> Comprehensive data sanitization</li>
-                    <li><strong>SQL Injection Prevention:</strong> Parameterized queries and ORM protection</li>
-                    <li><strong>XSS Protection:</strong> Output encoding and Content Security Policy</li>
-                    <li><strong>CSRF Protection:</strong> Token-based request validation</li>
-                </ul>
-                
-                <h2>Automated Reporting System</h2>
-                
-                <h3>PDF Report Generation</h3>
-                <p>Sophisticated reporting engine using ReportLab for professional document creation:</p>
-                
-                <pre><code>from reportlab.lib.pagesizes import letter, A4
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet
-
-class ReportGenerator:
-    def __init__(self):
-        self.styles = getSampleStyleSheet()
-    
-    def generate_procurement_report(self, start_date, end_date):
-        buffer = io.BytesIO()
-        doc = SimpleDocTemplate(buffer, pagesize=A4)
-        story = []
-        
-        # Add company header
-        story.append(self.create_header())
-        
-        # Add procurement summary table
-        procurement_data = self.get_procurement_data(start_date, end_date)
-        table = self.create_data_table(procurement_data)
-        story.append(table)
-        
-        # Add charts and analysis
-        story.append(self.create_spending_chart())
-        
-        doc.build(story)
-        return buffer.getvalue()</code></pre>
-                
-                <h3>Automated Email Distribution</h3>
-                <ul>
-                    <li><strong>Scheduled Reports:</strong> Automatic daily, weekly, and monthly reports</li>
-                    <li><strong>Alert Notifications:</strong> Real-time alerts for critical events</li>
-                    <li><strong>Custom Recipients:</strong> Role-based report distribution</li>
-                    <li><strong>Template Engine:</strong> Customizable email templates</li>
-                </ul>
-                
-                <h2>Performance Metrics</h2>
-                
-                <h3>System Performance</h3>
-                <ul>
-                    <li><strong>Response Time:</strong> < 200ms average API response time</li>
-                    <li><strong>Concurrent Users:</strong> Supports 100+ simultaneous users</li>
-                    <li><strong>Uptime:</strong> 99.9% system availability</li>
-                    <li><strong>Data Processing:</strong> Handles 10,000+ transactions per day</li>
-                </ul>
-                
-                <h3>Business Impact</h3>
-                <ul>
-                    <li><strong>Process Efficiency:</strong> 75% reduction in procurement processing time</li>
-                    <li><strong>Cost Savings:</strong> 15% reduction in procurement costs through optimization</li>
-                    <li><strong>Error Reduction:</strong> 99% elimination of manual data entry errors</li>
-                    <li><strong>Compliance:</strong> 100% audit compliance with automated documentation</li>
-                </ul>
-                
-                <div class="modal-downloads">
-                    <a href="reports/management-app-report.pdf" download class="download-btn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7,10 12,15 17,10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Download Project Documentation
-                    </a>
-                </div>
-                
-                <h2>Deployment & Scalability</h2>
-                
-                <h3>Infrastructure Design</h3>
-                <ul>
-                    <li><strong>Containerization:</strong> Docker containers for consistent deployment</li>
-                    <li><strong>Load Balancing:</strong> Nginx reverse proxy for high availability</li>
-                    <li><strong>Database Scaling:</strong> Read replicas and connection pooling</li>
-                    <li><strong>Monitoring:</strong> Application performance monitoring with alerts</li>
-                </ul>
-                
-                <h3>Future Roadmap</h3>
-                <ul>
-                    <li><strong>Mobile Application:</strong> Native iOS and Android apps</li>
-                    <li><strong>API Expansion:</strong> RESTful API for third-party integrations</li>
-                    <li><strong>Machine Learning:</strong> Advanced predictive analytics</li>
-                    <li><strong>Blockchain Integration:</strong> Supply chain transparency and traceability</li>
-                    <li><strong>Cloud Migration:</strong> Multi-cloud deployment strategy</li>
-                </ul>
-                
-                <p>This enterprise management platform showcases comprehensive full-stack development skills, business process understanding, and the ability to deliver solutions that create measurable business value.</p>
-            `
-        },
-        'sdn-ai': {
-            title: 'SDN + AI-Based Cybersecurity Project (Coming Soon)',
-            content: `
-                <h2>🚀 Next-Generation Network Security</h2>
-                <p>An advanced research project combining Software Defined Networking (SDN) with Artificial Intelligence to create an intelligent, adaptive firewall system. This cutting-edge framework represents the future of network security automation.</p>
-                
-                <div class="modal-highlight">
-                    <p><strong>🎯 Vision:</strong> Create a self-learning network security system that adapts to emerging threats in real-time using AI-powered analytics and SDN's programmable infrastructure.</p>
-                </div>
-                
-                <h2>🧠 AI-Enhanced Architecture</h2>
-                
-                <h3>Machine Learning Components</h3>
-                <p>The system will leverage advanced ML algorithms for intelligent threat detection:</p>
-                <ul>
-                    <li><strong>Anomaly Detection:</strong> Neural networks trained on flow statistics to identify unusual patterns</li>
-                    <li><strong>Behavioral Analysis:</strong> Time-series analysis for user and device behavior profiling</li>
-                    <li><strong>Predictive Analytics:</strong> Forecasting potential attack vectors before they manifest</li>
-                    <li><strong>Adaptive Learning:</strong> Continuous model refinement based on network feedback</li>
-                </ul>
-                
-                <h3>SDN Integration</h3>
-                <p>Intelligent network control powered by machine learning insights:</p>
-                <ul>
-                    <li><strong>Dynamic Policy Generation:</strong> AI-generated security policies based on threat landscape</li>
-                    <li><strong>Automated Response:</strong> Intelligent traffic rerouting and isolation strategies</li>
-                    <li><strong>Resource Optimization:</strong> ML-driven network resource allocation</li>
-                    <li><strong>Self-Healing Networks:</strong> Automatic recovery from security incidents</li>
-                </ul>
-                
-                <div class="tech-stack">
-                    <span class="tech-tag">Python 3.9+</span>
-                    <span class="tech-tag">Ryu SDN Controller</span>
-                    <span class="tech-tag">scikit-learn</span>
-                    <span class="tech-tag">pandas</span>
-                    <span class="tech-tag">joblib</span>
-                    <span class="tech-tag">Mininet</span>
-                    <span class="tech-tag">OpenFlow 1.4</span>
-                    <span class="tech-tag">scapy</span>
-                </div>
-                
-                <h2>📊 Project Architecture</h2>
-                
-                <h3>Core Components</h3>
-                <ul>
-                    <li><strong>AI Firewall Controller:</strong> Ryu-based SDN controller with integrated ML models</li>
-                    <li><strong>Network Topology:</strong> Customizable Mininet environments for testing</li>
-                    <li><strong>Data Pipeline:</strong> Real-time flow extraction and preprocessing</li>
-                    <li><strong>ML Training Engine:</strong> Automated model training and validation</li>
-                    <li><strong>Traffic Generator:</strong> Sophisticated attack and normal traffic simulation</li>
-                </ul>
-                
-                <h3>Advanced Features (Planned)</h3>
-                <ul>
-                    <li><strong>Multi-Vector Detection:</strong> DDoS, port scans, malware communication, data exfiltration</li>
-                    <li><strong>Federated Learning:</strong> Collaborative threat intelligence across multiple networks</li>
-                    <li><strong>Explainable AI:</strong> Transparent decision-making for security analysts</li>
-                    <li><strong>Cloud Integration:</strong> Hybrid on-premises and cloud deployment options</li>
-                </ul>
-                
-                <h2>🎯 Research Goals</h2>
-                
-                <h3>Academic Contributions</h3>
-                <ul>
-                    <li><strong>Algorithm Development:</strong> Novel ML algorithms for network security</li>
-                    <li><strong>Performance Benchmarking:</strong> Comprehensive evaluation against existing solutions</li>
-                    <li><strong>Scalability Analysis:</strong> Testing across various network sizes and topologies</li>
-                    <li><strong>Real-world Validation:</strong> Testing with actual enterprise network data</li>
-                </ul>
-                
-                <h3>Industry Applications</h3>
-                <ul>
-                    <li><strong>Enterprise Security:</strong> Next-generation network protection for businesses</li>
-                    <li><strong>IoT Security:</strong> Specialized protection for Internet of Things environments</li>
-                    <li><strong>Cloud Security:</strong> Dynamic security for cloud-native applications</li>
-                    <li><strong>Critical Infrastructure:</strong> High-availability security for essential services</li>
-                </ul>
-                
-                <h2>📈 Expected Outcomes</h2>
-                
-                <h3>Performance Targets</h3>
-                <ul>
-                    <li><strong>Detection Accuracy:</strong> >99.5% true positive rate with <0.05% false positives</li>
-                    <li><strong>Response Time:</strong> <500ms from threat detection to mitigation</li>
-                    <li><strong>Adaptability:</strong> Self-optimization within 24 hours of deployment</li>
-                    <li><strong>Scalability:</strong> Support for 10,000+ concurrent network flows</li>
-                </ul>
-                
-                <h3>Innovation Metrics</h3>
-                <ul>
-                    <li><strong>Zero-Day Detection:</strong> Ability to identify previously unknown attack patterns</li>
-                    <li><strong>Learning Speed:</strong> Rapid adaptation to new threat vectors</li>
-                    <li><strong>Resource Efficiency:</strong> Minimal computational overhead while maintaining accuracy</li>
-                    <li><strong>Interoperability:</strong> Seamless integration with existing network infrastructure</li>
-                </ul>
-                
-                <h2>🛠️ Development Roadmap</h2>
-                
-                <h3>Phase 1: Foundation (Q3 2025)</h3>
-                <ul>
-                    <li>✅ Project architecture design</li>
-                    <li>🔄 Basic SDN controller implementation</li>
-                    <li>🔄 ML model training pipeline</li>
-                    <li>📅 Dataset collection and preprocessing</li>
-                </ul>
-                
-                <h3>Phase 2: Core Development (Q4 2025)</h3>
-                <ul>
-                    <li>📅 AI-enhanced threat detection</li>
-                    <li>📅 Advanced traffic simulation</li>
-                    <li>📅 Performance optimization</li>
-                    <li>📅 Initial testing and validation</li>
-                </ul>
-                
-                <h3>Phase 3: Advanced Features (Q1 2026)</h3>
-                <ul>
-                    <li>📅 Cloud deployment capabilities</li>
-                    <li>📅 Real-world testing</li>
-                    <li>📅 Documentation and research publication</li>
-                    <li>📅 Open-source release</li>
-                </ul>
-                
-                <div class="modal-highlight">
-                    <p><strong>🎓 Academic Value:</strong> This project will serve as a comprehensive research platform for experimenting with cutting-edge ML algorithms in network security, contributing to both academic knowledge and practical industry solutions.</p>
-                </div>
-                
-                <h2>🤝 Collaboration Opportunities</h2>
-                <p>This project presents exciting opportunities for collaboration with:</p>
-                <ul>
-                    <li><strong>Research Institutions:</strong> Joint research on AI applications in cybersecurity</li>
-                    <li><strong>Industry Partners:</strong> Real-world testing and validation environments</li>
-                    <li><strong>Open Source Community:</strong> Contributions to SDN and ML security tools</li>
-                    <li><strong>Academic Publications:</strong> Conference papers and journal articles</li>
-                </ul>
-                
-                <p><strong>Stay tuned for updates as this groundbreaking project develops!</strong> 🚀</p>
-                
-                <div style="text-align: center; margin-top: 2rem; padding: 1rem; background: rgba(0, 122, 255, 0.1); border-radius: 12px; border: 1px solid rgba(0, 122, 255, 0.2);">
-                    <p style="color: var(--primary-color); font-weight: 600; margin: 0;">📧 Interested in collaboration or have questions about this project?</p>
-                    <p style="margin: 0.5rem 0 0 0; color: var(--text-secondary);">Feel free to reach out through the contact form below!</p>
-                </div>
-            `
-        }
-    };
-    
-    const project = projectData[projectType];
-    if (project) {
-        modalTitle.textContent = project.title;
-        modalBody.innerHTML = project.content;
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeProjectModal() {
-    const modal = document.getElementById('projectModal');
-    modal.classList.remove('show');
-    document.body.style.overflow = 'auto';
-}
-
-// === IMAGE LIGHTBOX ===
-function initImageLightbox() {
-    document.addEventListener('click', (e) => {
-        if (e.target.tagName === 'IMG' && e.target.closest('.modal-screenshots')) {
-            openImageLightbox(e.target.src, e.target.alt);
-        }
-    });
-}
-
-function openImageLightbox(src, alt) {
-    const lightbox = document.createElement('div');
-    lightbox.className = 'image-lightbox';
-    lightbox.innerHTML = `
-        <div class="lightbox-content">
-            <img src="${src}" alt="${alt}">
-            <button class="lightbox-close">&times;</button>
-        </div>
-    `;
-    
-    lightbox.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10001;
-        animation: fadeIn 0.3s ease-out;
-    `;
-    
-    const content = lightbox.querySelector('.lightbox-content');
-    content.style.cssText = `
-        position: relative;
-        max-width: 90vw;
-        max-height: 90vh;
-    `;
-    
-    const img = lightbox.querySelector('img');
-    img.style.cssText = `
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        border-radius: 8px;
-    `;
-    
-    const closeBtn = lightbox.querySelector('.lightbox-close');
-    closeBtn.style.cssText = `
-        position: absolute;
-        top: -40px;
-        right: 0;
-        background: none;
-        border: none;
-        color: white;
-        font-size: 32px;
-        cursor: pointer;
-        line-height: 1;
-    `;
-    
-    document.body.appendChild(lightbox);
-    document.body.style.overflow = 'hidden';
-    
-    // Close handlers
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
-        }
-    });
-    
-    closeBtn.addEventListener('click', closeLightbox);
-    
-    document.addEventListener('keydown', function onEscape(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
-            document.removeEventListener('keydown', onEscape);
-        }
-    });
-    
-    function closeLightbox() {
-        document.body.removeChild(lightbox);
-        document.body.style.overflow = 'auto';
-    }
-}
-
-// === NOTIFICATION SYSTEM ===
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 16px 24px;
-        border-radius: 8px;
-        color: white;
-        font-weight: 500;
-        z-index: 10000;
-        animation: slideInRight 0.3s ease-out;
-        max-width: 400px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    `;
-    
-    const colors = {
-        success: '#30D158',
-        error: '#FF3B30',
-        warning: '#FF9500',
-        info: '#007AFF'
-    };
-    
-    notification.style.background = colors[type] || colors.info;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.style.animation = 'slideOutRight 0.3s ease-out';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }
-    }, 5000);
-}
-
-// === CONTACT FORM ENHANCEMENT ===
-function initContactForm() {
-    const form = document.getElementById('contactForm');
-    if (!form) return;
-    
-    // Add form fields if they don't exist
-    if (!form.querySelector('input[name="name"]')) {
-        form.innerHTML = `
-            <h3 style="margin-bottom: 24px; color: var(--text-primary);">Send a Message</h3>
-            
-            <div class="form-group">
-                <label class="form-label" for="name">Full Name *</label>
-                <input type="text" id="name" name="name" class="form-input" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="email">Email Address *</label>
-                <input type="email" id="email" name="email" class="form-input" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="subject">Subject</label>
-                <select id="subject" name="subject" class="form-select">
-                    <option value="">Select a topic</option>
-                    <option value="job-opportunity">Job Opportunity</option>
-                    <option value="internship">Internship</option>
-                    <option value="collaboration">Collaboration</option>
-                    <option value="consultation">Technical Consultation</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" for="message">Message *</label>
-                <textarea id="message" name="message" class="form-textarea" rows="6" required placeholder="Tell me about your project or opportunity..."></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">
-                <span>Send Message</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
-                </svg>
+  /* ---------- Experience ---------- */
+  function renderTimeline() {
+    $("#timeline").innerHTML = D.experience
+      .map((x, i) => {
+        const badge = x.current ? '<span class="badge current">Current</span>' : x.education ? '<span class="badge edu">Education</span>' : "";
+        const areas = x.areas.length
+          ? `<div class="areas">${x.areas.map((a) => `<div class="area"><h4>${esc(a.title)}</h4><ul>${a.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>`).join("")}</div>`
+          : "";
+        return `
+        <div class="tl-item reveal ${x.current ? "current open" : ""}">
+          <div class="card">
+            <button class="tl-toggle" aria-expanded="${x.current}" aria-controls="tl-${i}">
+              <div>
+                <div class="tl-org">${esc(x.org)}</div>
+                <div class="tl-role">${esc(x.role)}</div>
+                <div class="tl-meta"><span class="tl-period">${esc(x.period)} · ${esc(x.place)}</span>${badge}</div>
+              </div>
+              <span class="chev">${icon("chevron", 22)}</span>
             </button>
-        `;
-        
-        // Set form action for Formspree
-        form.action = 'https://formspree.io/f/movwkgby';
-        form.method = 'POST';
-    }
-}
+            <div class="tl-panel" id="tl-${i}"><div><div class="tl-content">
+              <p>${esc(x.summary)}</p>${areas}
+              <div class="chips">${(x.tags || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+            </div></div></div>
+          </div>
+        </div>`;
+      })
+      .join("");
+    $$(".tl-toggle").forEach((b) =>
+      b.addEventListener("click", () => {
+        const item = b.closest(".tl-item");
+        b.setAttribute("aria-expanded", String(item.classList.toggle("open")));
+      })
+    );
+  }
 
-// === CONTACT INFO ENHANCEMENT ===
-function initContactInfo() {
-    const contactInfo = document.querySelector('.contact-info');
-    if (!contactInfo) return;
-    
-    // Update contact items if they're empty
-    const items = contactInfo.querySelectorAll('.contact-item');
-    if (items.length === 0 || !items[0].querySelector('h4').textContent.trim()) {
-        const contactItems = contactInfo.querySelectorAll('.contact-item');
-        
-        const contactData = [
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
-                title: 'Email',
-                info: 'yassineassila321@gmail.com'
-            },
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
-                title: 'Location',
-                info: 'Fes, Morocco'
-            },
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>',
-                title: 'LinkedIn',
-                info: 'Connect with me'
-            },
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>',
-                title: 'GitHub',
-                info: 'View my repositories'
-            },
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>',
-                title: 'Availability',
-                info: 'Open to opportunities'
-            }
-        ];
-        
-        contactItems.forEach((item, index) => {
-            if (contactData[index]) {
-                const icon = item.querySelector('.contact-icon');
-                const details = item.querySelector('.contact-details');
-                
-                if (icon) icon.innerHTML = contactData[index].icon;
-                if (details) {
-                    details.innerHTML = `
-                        <h4>${contactData[index].title}</h4>
-                        <p>${contactData[index].info}</p>
-                    `;
-                }
-            }
-        });
-    }
-}
+  /* ---------- Skills ---------- */
+  function renderSkills() {
+    $("#skillsGrid").innerHTML = D.skills
+      .map((s) => wrap(`
+        <article class="card skill-card">
+          <div class="skill-head"><span class="skill-ico">${icon(s.icon, 20)}</span><h3>${esc(s.group)}</h3></div>
+          <div class="chips">${s.items.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div>
+        </article>`))
+      .join("");
+    const all = [...new Set(D.skills.flatMap((s) => s.items))];
+    const row = all.map((t) => `<span>${esc(t)}</span>`).join("");
+    $("#marqueeTrack").innerHTML = row + row;
+  }
 
-// Initialize contact enhancements
-document.addEventListener('DOMContentLoaded', function() {
-    initContactForm();
-    initContactInfo();
-});
+  /* ---------- Projects ---------- */
+  const CAT = { work: "Work", study: "Study", personal: "Personal" };
+  const STATUS = { completed: "Completed", "in-progress": "In progress", planned: "Planned" };
+  const projects = [...D.projects].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  let activeFilter = "all", query = "";
 
-// Add styles for animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+  const FILTERS = [
+    ["all", "All", () => true],
+    ["work", "Work", (p) => p.category === "work"],
+    ["study", "Study", (p) => p.category === "study"],
+    ["personal", "Personal", (p) => p.category === "personal"],
+    ["ongoing", "In progress", (p) => p.status !== "completed"]
+  ];
+
+  function renderFilters() {
+    $("#filters").innerHTML = FILTERS
+      .filter(([k, , fn]) => k === "all" || projects.some(fn))
+      .map(([k, l, fn]) => `<button class="filter ${k === activeFilter ? "active" : ""}" role="tab" aria-selected="${k === activeFilter}" data-f="${k}">${l}<small>${projects.filter(fn).length}</small></button>`)
+      .join("");
+  }
+
+  function renderProjects() {
+    const fn = FILTERS.find((f) => f[0] === activeFilter)[2];
+    const q = query.trim().toLowerCase();
+    const list = projects.filter((p) => fn(p) && (!q || [p.title, p.tagline, p.summary, ...(p.tags || [])].join(" ").toLowerCase().includes(q)));
+    $("#projectsEmpty").hidden = list.length > 0;
+    $("#projectsGrid").innerHTML = list
+      .map((p) => {
+        const cover = p.images && p.images[0]
+          ? `<div class="p-cover"><img src="${safeUrl(p.images[0].src)}" alt="${esc(p.images[0].alt)}" loading="lazy">`
+          : `<div class="p-cover no-img"><span>${esc(p.title.split(/\s+/).map((w) => w[0]).slice(0, 3).join("").toUpperCase())}</span>`;
+        return wrap(`
+        <button class="card project-card" data-id="${esc(p.id)}" aria-label="Open ${esc(p.title)}">
+          ${cover}<span class="p-status ${esc(p.status)}"><i></i>${esc(STATUS[p.status] || p.status)}</span></div>
+          <div class="p-body">
+            <span class="p-cat">${esc(CAT[p.category] || p.category)}</span>
+            <h3>${esc(p.title)}</h3>
+            <p>${esc(p.tagline)}</p>
+            <div class="chips">${(p.tags || []).slice(0, 5).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+          </div>
+        </button>`);
+      })
+      .join("");
+    watch($("#projectsGrid"));
+    bindTilt();
+  }
+
+  function bindTilt() {
+    if (reduceMotion || !matchMedia("(hover: hover)").matches) return;
+    $$(".project-card").forEach((c) => {
+      c.addEventListener("mousemove", (e) => {
+        const r = c.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        c.style.transform = `perspective(900px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg) translateY(-4px)`;
+      });
+      c.addEventListener("mouseleave", () => (c.style.transform = ""));
+    });
+  }
+
+  function bindProjectControls() {
+    $("#filters").addEventListener("click", (e) => {
+      const b = e.target.closest(".filter");
+      if (!b) return;
+      activeFilter = b.dataset.f;
+      renderFilters();
+      renderProjects();
+    });
+    $("#projectSearch").addEventListener("input", (e) => { query = e.target.value; renderProjects(); });
+    $("#projectsGrid").addEventListener("click", (e) => {
+      const c = e.target.closest(".project-card");
+      if (c) openProject(c.dataset.id);
+    });
+  }
+
+  /* ---------- Modal ---------- */
+  const modal = $("#projectModal");
+  const lightbox = $("#lightbox");
+  const lockScroll = (on) => document.documentElement.classList.toggle("lock", on);
+
+  function openProject(id, pushHash = true) {
+    const p = D.projects.find((x) => x.id === id);
+    if (!p) return;
+    const linkIcon = { github: "github", pdf: "file", demo: "external", link: "external" };
+    $("#modalContent").innerHTML = `
+      <div class="m-hero">
+        <div class="m-meta"><span class="p-status ${esc(p.status)}"><i></i>${esc(STATUS[p.status] || p.status)}</span><span class="p-cat">${esc(CAT[p.category] || p.category)} · ${esc(p.date)}</span></div>
+        <h2 id="modalTitle">${esc(p.title)}</h2>
+        <p class="lead">${esc(p.summary)}</p>
+      </div>
+      ${p.metrics && p.metrics.length ? `<div class="m-metrics">${p.metrics.map((m) => `<div class="m-metric"><b>${esc(m.value)}</b><span>${esc(m.label)}</span></div>`).join("")}</div>` : ""}
+      ${p.images && p.images.length ? `<div class="m-gallery">${p.images.map((im) => `<button type="button" data-src="${safeUrl(im.src)}" data-alt="${esc(im.alt)}" aria-label="Enlarge: ${esc(im.alt)}"><img src="${safeUrl(im.src)}" alt="${esc(im.alt)}" loading="lazy"></button>`).join("")}</div>` : ""}
+      <div class="m-section"><h4>Tech</h4><div class="chips">${(p.tags || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div></div>
+      ${(p.details || []).map((s) => `<div class="m-section"><h4>${esc(s.heading)}</h4><ul>${s.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+      ${p.links && p.links.length ? `<div class="m-links">${p.links.map((l) => `<a class="btn btn-ghost" href="${safeUrl(l.url)}" target="_blank" rel="noopener">${icon(linkIcon[l.type] || "external", 16)}${esc(l.label)}</a>`).join("")}</div>` : '<div class="m-links"></div>'}`;
+    $(".modal-inner", modal).scrollTop = 0;
+    if (!modal.open) modal.showModal();
+    lockScroll(true);
+    if (pushHash) history.pushState(null, "", `#project/${encodeURIComponent(id)}`);
+  }
+
+  function closeModalCleanup() {
+    lockScroll(false);
+    if (location.hash.startsWith("#project/")) history.replaceState(null, "", "#projects");
+  }
+  $("#modalClose").addEventListener("click", () => modal.close());
+  modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
+  modal.addEventListener("close", closeModalCleanup);
+  $("#modalContent").addEventListener("click", (e) => {
+    const b = e.target.closest(".m-gallery button");
+    if (!b) return;
+    $("#lightboxImg").src = b.dataset.src;
+    $("#lightboxImg").alt = b.dataset.alt;
+    lightbox.showModal();
+  });
+  $("#lightboxClose").addEventListener("click", () => lightbox.close());
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    e.preventDefault();
+    if (lightbox.open) lightbox.close();
+    else if (modal.open) modal.close();
+  });
+  lightbox.addEventListener("click", (e) => { if (e.target !== $("#lightboxImg")) lightbox.close(); });
+  window.addEventListener("popstate", () => {
+    if (location.hash.startsWith("#project/")) openProject(decodeURIComponent(location.hash.slice(9)), false);
+    else if (modal.open) modal.close();
+  });
+
+  /* ---------- GitHub feed ---------- */
+  const LANG_COLORS = { Python: "#3572A5", JavaScript: "#f1e05a", TypeScript: "#3178c6", HTML: "#e34c26", CSS: "#563d7c", Shell: "#89e051", PowerShell: "#012456", Java: "#b07219", "C++": "#f34b7d", C: "#888", Go: "#00ADD8", "Jupyter Notebook": "#DA5B0B" };
+
+  async function loadRepos() {
+    const grid = $("#ghGrid");
+    const user = D.profile.github;
+    grid.innerHTML = '<div class="skeleton"></div>'.repeat(3);
+    const key = `gh-repos-${user}`;
+    try {
+      let repos;
+      const cached = sessionStorage.getItem(key);
+      if (cached) repos = JSON.parse(cached);
+      else {
+        const res = await fetch(`https://api.github.com/users/${encodeURIComponent(user)}/repos?sort=pushed&per_page=30`, { headers: { Accept: "application/vnd.github+json" } });
+        if (!res.ok) throw new Error(res.status);
+        repos = await res.json();
+        sessionStorage.setItem(key, JSON.stringify(repos));
+      }
+      const list = repos.filter((r) => !r.fork && !r.archived && r.name.toLowerCase() !== user.toLowerCase()).slice(0, 6);
+      if (!list.length) throw new Error("empty");
+      grid.innerHTML = list.map((r) => wrap(`
+        <a class="card repo" href="${safeUrl(r.html_url)}" target="_blank" rel="noopener">
+          <h4>${esc(r.name)}</h4>
+          <p>${esc(r.description || "No description yet.")}</p>
+          <div class="repo-meta">
+            ${r.language ? `<span><i class="lang-dot" style="--l:${LANG_COLORS[r.language] || "var(--accent)"}"></i>${esc(r.language)}</span>` : ""}
+            <span>★ ${r.stargazers_count}</span>
+            <span>Updated ${new Date(r.pushed_at).toLocaleDateString("en-GB", { month: "short", year: "numeric" })}</span>
+          </div>
+        </a>`)).join("");
+      watch(grid);
+    } catch (_) {
+      grid.innerHTML = `<p class="gh-note">Couldn't load repositories right now. See everything on <a class="link-arrow" href="https://github.com/${esc(user)}" target="_blank" rel="noopener">github.com/${esc(user)}</a>.</p>`;
     }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
+  }
+
+  /* ---------- Contact ---------- */
+  function renderContact() {
+    const p = D.profile;
+    const row = (i, l, v, href) => {
+      const inner = `<span class="c-ico">${icon(i, 18)}</span><span><small>${l}</small><span class="v">${esc(v)}</span></span>`;
+      return `<li>${href ? `<a href="${safeUrl(href)}" ${href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>${inner}</a>` : `<div>${inner}</div>`}</li>`;
+    };
+    $("#contactList").innerHTML =
+      row("mail", "Email", p.email, `mailto:${p.email}`) +
+      row("phone", "Phone", p.phone, `tel:${p.phone.replace(/[^+\d]/g, "")}`) +
+      row("linkedin", "LinkedIn", "yassine-aassila", p.linkedin) +
+      row("github", "GitHub", `github.com/${p.github}`, `https://github.com/${p.github}`) +
+      row("pin", "Location", p.location);
+
+    const form = $("#contactForm"), status = $("#formStatus"), btn = $("#formBtn");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let ok = true;
+      $$(".field", form).forEach((f) => {
+        const i = $("input,select,textarea", f);
+        const bad = i.required && (!i.value.trim() || (i.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.value)));
+        f.classList.toggle("invalid", bad);
+        if (bad) ok = false;
+      });
+      status.className = "form-status";
+      if (!ok) { status.textContent = "Please fill in all fields correctly."; status.classList.add("err"); return; }
+      btn.disabled = true; btn.textContent = "Sending…";
+      try {
+        const res = await fetch(p.formspree, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error();
+        form.reset();
+        status.textContent = "Thanks! Your message has been sent — I'll get back to you soon.";
+        status.classList.add("ok");
+      } catch (_) {
+        status.textContent = `Something went wrong. Please email me directly at ${p.email}.`;
+        status.classList.add("err");
+      } finally {
+        btn.disabled = false; btn.textContent = "Send message";
+      }
+    });
+  }
+
+  /* ---------- Header, nav, theme ---------- */
+  function bindChrome() {
+    const header = $("#siteHeader"), bar = $("#scrollProgress"), nav = $("#nav"), menu = $("#menuBtn");
+    const onScroll = () => {
+      header.classList.toggle("scrolled", scrollY > 12);
+      const h = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + "%";
+    };
+    addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    menu.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      menu.setAttribute("aria-expanded", String(open));
+    });
+    nav.addEventListener("click", (e) => { if (e.target.closest("a")) { nav.classList.remove("open"); menu.setAttribute("aria-expanded", "false"); } });
+
+    const links = $$(".nav-link");
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) links.forEach((l) => l.classList.toggle("active", l.getAttribute("href") === "#" + e.target.id));
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    $$("main section[id]").forEach((s) => spy.observe(s));
+
+    $("#themeToggle").addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem("theme", next); } catch (_) {}
+    });
+  }
+
+  /* ---------- Network canvas background ---------- */
+  function network() {
+    const cv = $("#netCanvas"), ctx = cv.getContext("2d");
+    let w, h, nodes = [], dpr = Math.min(devicePixelRatio || 1, 2);
+    const mouse = { x: -999, y: -999 };
+    const color = () => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#22d3ee";
+
+    function resize() {
+      w = innerWidth; h = innerHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.min(Math.floor((w * h) / 17000), 90);
+      nodes = Array.from({ length: n }, () => ({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35, r: Math.random() * 1.6 + 0.8 }));
     }
-`;
-document.head.appendChild(style);
+    function draw(move) {
+      ctx.clearRect(0, 0, w, h);
+      const c = color(), maxD = 140;
+      for (const a of nodes) {
+        if (move) {
+          a.x += a.vx; a.y += a.vy;
+          if (a.x < 0 || a.x > w) a.vx *= -1;
+          if (a.y < 0 || a.y > h) a.vy *= -1;
+        }
+        ctx.globalAlpha = 0.8; ctx.fillStyle = c;
+        ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.283); ctx.fill();
+      }
+      ctx.strokeStyle = c; ctx.lineWidth = 1;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < maxD) { ctx.globalAlpha = (1 - d / maxD) * 0.35; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        }
+        const dm = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+        if (dm < 190) { ctx.globalAlpha = (1 - dm / 190) * 0.7; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); }
+      }
+    }
+    resize();
+    addEventListener("resize", resize);
+    if (reduceMotion) return draw(false);
+    addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+    addEventListener("mouseout", () => { mouse.x = mouse.y = -999; });
+    let raf;
+    const loop = () => { draw(true); raf = requestAnimationFrame(loop); };
+    document.addEventListener("visibilitychange", () => { cancelAnimationFrame(raf); if (!document.hidden) loop(); });
+    loop();
+  }
+
+  /* ---------- Init ---------- */
+  renderHero();
+  renderStats();
+  renderNow();
+  renderAbout();
+  renderTimeline();
+  renderSkills();
+  renderFilters();
+  renderProjects();
+  bindProjectControls();
+  renderContact();
+  bindChrome();
+  network();
+  watch();
+  loadRepos();
+  if (location.hash.startsWith("#project/")) openProject(decodeURIComponent(location.hash.slice(9)), false);
+})();

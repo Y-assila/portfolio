@@ -1,0 +1,273 @@
+{
+  "now": {
+    "updated": "2026-11-07",
+    "items": [
+      {
+        "kind": "working",
+        "title": "Working",
+        "headline": "Level 2 IT Support @ DATA PROCESS",
+        "text": "Field operations for ABHS, Prefectures, ONP, DGI, TGR and CNOPS: Active Directory, Exchange, WSUS, HP/Aruba switches, Hikvision CCTV.",
+        "tags": [
+          "Windows Server",
+          "Networking",
+          "Field ops"
+        ]
+      },
+      {
+        "kind": "learning",
+        "title": "Studying",
+        "headline": "Cisco CCNA",
+        "text": "Going deeper on routing, switching, ACLs and network automation — and labbing everything in Packet Tracer.",
+        "tags": [
+          "CCNA",
+          "OSPF",
+          "VLAN"
+        ]
+      },
+      {
+        "kind": "building",
+        "title": "Building",
+        "headline": "AI-powered SDN security",
+        "text": "Designing an SDN controller that learns normal traffic and adapts firewall rules automatically when it spots a threat.",
+        "tags": [
+          "Python",
+          "Ryu",
+          "scikit-learn"
+        ]
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "ai-sdn-security",
+      "title": "AI-Powered SDN Security",
+      "tagline": "An SDN controller that learns normal traffic and reacts to threats on its own.",
+      "category": "personal",
+      "status": "planned",
+      "date": "2026-11",
+      "featured": true,
+      "tags": [
+        "Python",
+        "Ryu",
+        "Mininet",
+        "scikit-learn",
+        "OpenFlow"
+      ],
+      "summary": "Next-generation network security platform combining Software-Defined Networking with machine learning for intelligent threat detection, adaptive firewall rules and automated incident response.",
+      "metrics": [
+        {
+          "value": "ML",
+          "label": "Threat detection"
+        },
+        {
+          "value": "Auto",
+          "label": "Mitigation"
+        },
+        {
+          "value": "Live",
+          "label": "Analytics"
+        }
+      ],
+      "images": [],
+      "links": [],
+      "details": [
+        {
+          "heading": "Goals",
+          "items": [
+            "Learn a baseline of normal traffic and flag anomalies in real time",
+            "Push adaptive flow rules to the switches without human intervention",
+            "Dashboard for live traffic, alerts and model decisions"
+          ]
+        },
+        {
+          "heading": "Roadmap",
+          "items": [
+            "Collect and label traffic datasets in Mininet",
+            "Train and compare models (Random Forest, Isolation Forest…)",
+            "Integrate the model with the Ryu controller",
+            "Evaluate against DDoS and scanning scenarios"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supplier-management",
+      "title": "Enterprise Supplier Management",
+      "tagline": "Full-stack Flask app for suppliers, procurement and automated reporting.",
+      "category": "work",
+      "status": "completed",
+      "date": "2025-05",
+      "featured": true,
+      "tags": [
+        "Flask",
+        "SQLite",
+        "Pandas",
+        "ReportLab",
+        "PyInstaller",
+        "Google Apps Script"
+      ],
+      "summary": "A web application built during my internship at UPF to manage suppliers and procurement, with role-based access, automated PDF/Excel reports and data-visualisation dashboards — packaged as a Windows executable.",
+      "metrics": [
+        {
+          "value": "75%",
+          "label": "Process efficiency"
+        },
+        {
+          "value": "20h+",
+          "label": "Saved per week"
+        },
+        {
+          "value": "99%",
+          "label": "Error reduction"
+        }
+      ],
+      "images": [
+        {
+          "src": "screenshots/management-dashboard.jpg",
+          "alt": "Management dashboard"
+        },
+        {
+          "src": "screenshots/pdf-report.png",
+          "alt": "Generated PDF report"
+        }
+      ],
+      "links": [
+        {
+          "label": "Technical report",
+          "url": "reports/management-app-report.pdf",
+          "type": "pdf"
+        }
+      ],
+      "details": [
+        {
+          "heading": "What it does",
+          "items": [
+            "Supplier, contract and order management with role-based access control",
+            "One-click PDF (ReportLab) and Excel (Pandas) reports",
+            "Dashboards built with matplotlib and seaborn",
+            "Google Apps Script integration for spreadsheet workflows"
+          ]
+        },
+        {
+          "heading": "Delivery",
+          "items": [
+            "SQLite database — zero-config deployment",
+            "Packaged with PyInstaller for one-click installs on Windows"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sdn-attack-detection",
+      "title": "SDN Attack Detection System",
+      "tagline": "Real-time ICMP-flood detection with automatic blocking and email alerts.",
+      "category": "study",
+      "status": "completed",
+      "date": "2025-05",
+      "featured": true,
+      "tags": [
+        "Python",
+        "Ryu",
+        "Mininet",
+        "OpenFlow",
+        "Security"
+      ],
+      "summary": "My final-year project: an OpenFlow controller built on Ryu that monitors traffic in a Mininet topology, detects ICMP flood attacks in real time, blocks the source with dynamic flow rules and alerts administrators by email.",
+      "metrics": [
+        {
+          "value": "99.7%",
+          "label": "Detection accuracy"
+        },
+        {
+          "value": "<2s",
+          "label": "Response time"
+        },
+        {
+          "value": "0.1%",
+          "label": "False positives"
+        }
+      ],
+      "images": [
+        {
+          "src": "screenshots/sdn-architecture.png",
+          "alt": "SDN architecture overview"
+        },
+        {
+          "src": "screenshots/mininet-topology.png",
+          "alt": "Mininet test topology"
+        },
+        {
+          "src": "screenshots/sdn-architecture-detailed.png",
+          "alt": "Detailed SDN architecture"
+        },
+        {
+          "src": "screenshots/alert-email.jpg",
+          "alt": "Automated security alert email"
+        }
+      ],
+      "links": [
+        {
+          "label": "Technical report",
+          "url": "reports/sdn-attack-detection-report.pdf",
+          "type": "pdf"
+        }
+      ],
+      "details": [
+        {
+          "heading": "How it works",
+          "items": [
+            "Threshold-based detection on per-source packet rates in a sliding time window",
+            "Dynamic flow rules block malicious sources instantly",
+            "SMTP alerts with attack details; structured JSON logs for forensics"
+          ]
+        },
+        {
+          "heading": "Stack",
+          "items": [
+            "Python 3, Ryu SDN framework, OpenFlow 1.3, Mininet"
+          ]
+        },
+        {
+          "heading": "Testing",
+          "items": [
+            "ICMP floods from 50 to 10,000 packets/s, multi-source and low-and-slow attacks",
+            "TCP SYN and UDP floods used for protocol-specific checks"
+          ]
+        },
+        {
+          "heading": "Next steps",
+          "items": [
+            "ML-based anomaly detection (see AI-Powered SDN Security)",
+            "Behavioural profiling and threat-intelligence feeds"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "this-portfolio",
+      "title": "This Portfolio",
+      "tagline": "Data-driven, framework-free site hosted on GitHub Pages.",
+      "category": "personal",
+      "status": "completed",
+      "date": "2026-11",
+      "featured": false,
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "GitHub Pages"
+      ],
+      "summary": "Everything on this page is rendered from a single data file, plus live repositories pulled from the GitHub API — so adding a project takes a minute.",
+      "metrics": [],
+      "images": [],
+      "links": [
+        {
+          "label": "Source on GitHub",
+          "url": "https://github.com/Y-assila/portfolio",
+          "type": "github"
+        }
+      ],
+      "details": []
+    }
+  ]
+}

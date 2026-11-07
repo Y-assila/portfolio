@@ -1,1051 +1,231 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YASSINE AASSILA - Level 2 IT Support Technician | Network Infrastructure & Cybersecurity Professional</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007AFF' stroke-width='2'%3E%3Cpath d='M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z'/%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E">
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- External CSS -->
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yassine Aassila — Network, Systems & Cybersecurity</title>
+  <meta name="description" content="Portfolio of Yassine Aassila — Level 2 IT Support & Infrastructure professional specialising in networking, Windows Server, cybersecurity and SDN. Based in Fès, Morocco.">
+  <meta name="theme-color" content="#0b1020">
+  <meta property="og:title" content="Yassine Aassila — Network, Systems & Cybersecurity">
+  <meta property="og:description" content="Level 2 IT Support & Infrastructure professional. Networking, Windows Server, cybersecurity and SDN projects.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='2'%3E%3Cpath d='M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z'/%3E%3Cpath d='M9 12l2 2 4-4'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    try {
+      var t = localStorage.getItem("theme");
+      if (t) document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
 </head>
-<body data-theme="dark">
-    
-    <!-- Scroll Progress Indicator -->
-    <div class="scroll-indicator" id="scrollIndicator"></div>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <canvas id="netCanvas" aria-hidden="true"></canvas>
+  <div class="bg-glow" aria-hidden="true"></div>
 
-    <!-- Animated Background -->
-    <div class="animated-bg"></div>
-    <div class="floating-elements" id="floatingElements"></div>
-
-    <!-- Navigation -->
-    <nav class="nav-container">
-        <div class="nav-pill">
-            <ul class="nav-list">
-                <li class="nav-item"><a href="#home" class="nav-link active">Home</a></li>
-                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="#experience" class="nav-link">Experience</a></li>
-                <li class="nav-item"><a href="#impact" class="nav-link">Impact</a></li>
-                <li class="nav-item"><a href="#timeline" class="nav-link">Timeline</a></li>
-                <li class="nav-item"><a href="#skills" class="nav-link">Skills</a></li>
-                <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
-                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="section hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="2"/>
-                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
-                    </svg>
-                    Level 2 IT Support Technician • Field Operations Specialist • Open to International Opportunities
-                </div>
-                <h1 class="hero-title">YASSINE AASSILA</h1>
-                <h2 class="hero-subtitle">Level 2 IT Support & Infrastructure Professional</h2>
-                <p class="hero-description">
-                    Proactive and technically skilled IT Support Technician (Level 2 – Field Operations) with strong experience in system administration, networking, and IT infrastructure management. Currently supporting public sector organizations across Morocco with advanced troubleshooting, server management, and network maintenance. Expertise in Windows Server, Linux, cybersecurity, and Software-Defined Networking (SDN).
-                </p>
-                <div class="hero-cta">
-                    <a href="#projects" class="btn btn-primary">
-                        <span>View My Work</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M7 17l9.2-9.2M17 17V7H7"/>
-                        </svg>
-                    </a>
-                    <a href="#contact" class="btn btn-secondary">
-                        <span>Get In Touch</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
-                        </svg>
-                    </a>
-                </div>
-                
-                <div class="cv-downloads">
-                    <h3 class="cv-title">Download My CV</h3>
-                    <div class="cv-buttons">
-                        <a href="cv-en.pdf" download="Yassine_Aassila_CV_EN.pdf" class="btn btn-cv">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14,2 14,8 20,8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                                <polyline points="10,9 9,9 8,9"/>
-                            </svg>
-                            <span>CV English</span>
-                        </a>
-                        <a href="cv-fr.pdf" download="Yassine_Aassila_CV_FR.pdf" class="btn btn-cv">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14,2 14,8 20,8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                                <polyline points="10,9 9,9 8,9"/>
-                            </svg>
-                            <span>CV Français</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <p class="section-subtitle">
-                Level 2 IT Support Technician at DATA PROCESS, providing advanced technical support for public sector organizations across Morocco. 
-                Graduate from Centre Mixte de Formation Professionnelle El Adarissa, specializing in Digital Infrastructure (Network & Systems). 
-                Proven experience in field operations, system administration, and network troubleshooting.
-            </p>
-            
-            <div class="impact-grid">
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                            <line x1="8" y1="21" x2="16" y2="21"/>
-                            <line x1="12" y1="17" x2="12" y2="21"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number"></div>
-                    <div class="impact-label">Education & Certification</div>
-                    <div class="impact-description">
-                        Graduated from OFPPT El Adarissa in Digital Infrastructure. Completed CCNA courses and Network Security certification. 
-                        Final project focused on SDN network security and web-based management tools.
-                    </div>
-                </div>
-                
-                <div class="impact-card highlight">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <line x1="2" y1="12" x2="22" y2="12"/>
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number"></div>
-                    <div class="impact-label">Global Opportunities</div>
-                    <div class="impact-description">
-                        Multilingual professional (Arabic native, English B1-B2, French working knowledge). 
-                        Open to international relocation and remote work opportunities worldwide.
-                    </div>
-                </div>
-                
-                <div class="impact-card highlight">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number"></div>
-                    <div class="impact-label">Current Role & Experience</div>
-                    <div class="impact-description">
-                        <strong>Level 2 IT Support Technician at DATA PROCESS</strong> (July 2025 – Present). 
-                        Managing IT infrastructure for public sector organizations including ABHS, Prefectures, ONP, DGI, TGR, CNOPS. 
-                        Expertise in Active Directory, DNS, DHCP, file servers, backup systems, WSUS, and nationwide field operations.
-                        <br><br>
-                        <strong>Previous Internship:</strong> Université Privée de Fès (April-May 2025) - Developed Flask applications, 
-                        worked on SDN attack detection, and contributed to network infrastructure management.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Professional Experience Section -->
-    <section id="experience" class="section">
-        <div class="container">
-            <h2 class="section-title">Professional Experience</h2>
-            <p class="section-subtitle">
-                Hands-on technical expertise gained through real-world enterprise environments and production systems
-            </p>
-            
-            <div class="experience-timeline">
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <div class="company-info">
-                            <h3 class="company-name">DATA PROCESS</h3>
-                            <p class="job-title">IT Support Technician (Level 2 – Field Operations)</p>
-                            <p class="duration">July 2025 – Present | Morocco</p>
-                        </div>
-                        <div class="experience-badge">Current Role</div>
-                    </div>
-                    
-                    <div class="experience-content">
-                        <p class="experience-summary">
-                            Providing advanced Level 2 IT support for public sector organizations (ABHS, Prefectures, ONP, DGI, TGR, CNOPS, and ministerial sites) 
-                            with expertise in enterprise systems, networking infrastructure, and field operations.
-                        </p>
-                        
-                        <div class="technical-areas">
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                        <path d="M6 8h.01M10 8h.01M14 8h.01"/>
-                                    </svg>
-                                    Windows Server & Enterprise Systems
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>Troubleshooting production Windows Server environments</li>
-                                    <li>Active Directory Domain Services (AD DS): User/group management, domain authentication, AD-DNS dependencies</li>
-                                    <li>Exchange Server: Mail flow issues, Autodiscover service, Management Console access, registry-level troubleshooting</li>
-                                    <li>Backup & Data Protection (DBM/DPM): Backup failure analysis, synchronization issues, dpmsync command operations</li>
-                                    <li>WSUS: Client update troubleshooting, Group Policy impact analysis, approval logic management</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="2"/>
-                                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/>
-                                    </svg>
-                                    Enterprise Networking (HP/Aruba)
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>HP and Aruba enterprise switches in production environments</li>
-                                    <li>VLAN creation/management, port configuration (access/trunk), IP addressing</li>
-                                    <li>Switch management: Console access, SSH/Telnet, TFTP configuration backup/restore</li>
-                                    <li>Troubleshooting: Network connectivity, VLAN misconfiguration, port-related problems</li>
-                                    <li>Configuration management: running-config vs startup-config operations</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z"/>
-                                    </svg>
-                                    Security & Surveillance Systems
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>Hikvision CCTV Systems: IP cameras and NVRs installation/troubleshooting</li>
-                                    <li>IP addressing, subnet alignment, camera-to-NVR authentication</li>
-                                    <li>Diagnostics: Hardware vs PoE vs network-related problems</li>
-                                    <li>Tools: Hikvision SADP Tool, iVMS-4200</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                                    </svg>
-                                    Telephony Systems (LG PABX)
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>LG SOHO / LG ARIA PABX systems installation and maintenance</li>
-                                    <li>Extension management and call routing configuration</li>
-                                    <li>Hardware troubleshooting: Cabling, power supply, handset diagnostics</li>
-                                    <li>Software configuration using system programming codes</li>
-                                    <li>Incoming/outgoing call flow analysis and optimization</li>
-                                    <li>Line troubleshooting and trunk configuration</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                        <polyline points="22,6 12,13 2,6"/>
-                                    </svg>
-                                    Messaging & Email Infrastructure
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>Exchange mail flow architecture and Autodiscover service management</li>
-                                    <li>Inbound/outbound email delivery troubleshooting</li>
-                                    <li>Mail gateway and filtering configuration</li>
-                                    <li>Service dependency analysis and health monitoring</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="experience-item">
-                    <div class="experience-header">
-                        <div class="company-info">
-                            <h3 class="company-name">Université Privée de Fès (UPF)</h3>
-                            <p class="job-title">Intern – IT & Network Infrastructure</p>
-                            <p class="duration">April 2025 – May 2025 | Fès, Morocco</p>
-                        </div>
-                        <div class="experience-badge internship">Internship</div>
-                    </div>
-                    
-                    <div class="experience-content">
-                        <p class="experience-summary">
-                            Comprehensive internship focusing on web application development, network infrastructure, and cybersecurity implementations.
-                        </p>
-                        
-                        <div class="technical-areas">
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="16 18 22 12 16 6"/>
-                                        <polyline points="8 6 2 12 8 18"/>
-                                    </svg>
-                                    Software Development
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>Flask-based web application with SQLite database</li>
-                                    <li>Role-based access control and automated reporting (PDF/Excel)</li>
-                                    <li>Data visualization dashboards using matplotlib and seaborn</li>
-                                    <li>Application packaging with PyInstaller for Windows deployment</li>
-                                    <li>Google Apps Script integration for enhanced functionality</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="tech-area">
-                                <h4 class="area-title">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z"/>
-                                        <path d="M9 12l2 2 4-4"/>
-                                    </svg>
-                                    Network Security & Infrastructure
-                                </h4>
-                                <ul class="tech-list">
-                                    <li>VLAN configuration and VPN setup implementation</li>
-                                    <li>Network analysis and packet inspection using Wireshark</li>
-                                    <li>SDN-based attack detection system development</li>
-                                    <li>Security policy implementation and system hardening</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tools-technologies">
-                <h3 class="tools-title">Core Tools & Technologies</h3>
-                <div class="impact-grid">
-                    <div class="impact-card">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="2"/>
-                                <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">Networking & Diagnostics</div>
-                        <div class="impact-description">Advanced IP Scanner, Wireshark, HP/Aruba CLI, TFTP</div>
-                    </div>
-                    <div class="impact-card highlight">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="M6 8h.01M10 8h.01M14 8h.01"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">Server Administration</div>
-                        <div class="impact-description">Windows Event Viewer, PowerShell, RSAT Tools, Exchange Management Console</div>
-                    </div>
-                    <div class="impact-card">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z"/>
-                                <path d="M9 12l2 2 4-4"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">Security & Surveillance</div>
-                        <div class="impact-description">Hikvision SADP, iVMS-4200, LG PABX Management</div>
-                    </div>
-                    <div class="impact-card highlight">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">Remote Support</div>
-                        <div class="impact-description">AnyDesk, TeamViewer, SSH/Telnet</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Professional Impact Section -->
-    <section id="impact" class="section">
-        <div class="container">
-            <h2 class="section-title">Professional Impact & Metrics</h2>
-            <p class="section-subtitle">
-                Quantifiable achievements and operational excellence in enterprise IT support and infrastructure management
-            </p>
-            
-            <div class="impact-grid">
-                <div class="impact-card highlight">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="4" width="20" height="16" rx="2"/>
-                            <path d="M6 8h.01M10 8h.01M14 8h.01"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">80+</div>
-                    <div class="impact-label">Servers Maintained</div>
-                    <div class="impact-description">Across multiple public sector organizations nationwide</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                            <circle cx="9" cy="7" r="4"/>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">1000s</div>
-                    <div class="impact-label">End Users Supported</div>
-                    <div class="impact-description">Providing IT support across Morocco's public sector</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12,6 12,12 16,14"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">3-6</div>
-                    <div class="impact-label">Daily Interventions</div>
-                    <div class="impact-description">Average on-site and remote support operations per day</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">1-3h</div>
-                    <div class="impact-label">Resolution Time</div>
-                    <div class="impact-description">Average incident resolution time across all complexity levels</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">50+</div>
-                    <div class="impact-label">Cities Covered</div>
-                    <div class="impact-description">Nationwide field operations in urban centers and rural areas</div>
-                </div>
-                
-                <div class="impact-card highlight">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                            <polyline points="22,4 12,14.01 9,11.01"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">99%+</div>
-                    <div class="impact-label">System Uptime</div>
-                    <div class="impact-description">Maintaining high availability across distributed environments</div>
-                </div>
-            </div>
-            
-            <div class="achievements-section">
-                <h3 class="achievements-title">Key Operational Achievements</h3>
-                <div class="impact-grid">
-                    <div class="impact-card highlight">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">First-Call Resolution Excellence</div>
-                        <div class="impact-description">
-                            Successfully resolved the majority of technical issues during the first intervention, minimizing downtime and client disruption.
-                        </div>
-                    </div>
-                    
-                    <div class="impact-card">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14.828 14.828a4 4 0 0 1-5.656 0M9 10h.01M15 10h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">High-Pressure Stakeholder Management</div>
-                        <div class="impact-description">
-                            Consistently received positive feedback for professionalism, technical competence, and reliability in challenging public sector environments.
-                        </div>
-                    </div>
-                    
-                    <div class="impact-card highlight">
-                        <div class="impact-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/>
-                                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"/>
-                            </svg>
-                        </div>
-                        <div class="impact-label">Preventive Maintenance Impact</div>
-                        <div class="impact-description">
-                            Reduced recurring incidents through comprehensive technical documentation and proactive system maintenance strategies.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Career Timeline Section -->
-    <section id="timeline" class="section">
-        <div class="container">
-            <h2 class="section-title">Career Timeline</h2>
-            <p class="section-subtitle">
-                Professional journey from education to enterprise IT leadership
-            </p>
-            
-            <div class="timeline-container">
-                <div class="timeline-line"></div>
-                
-                <div class="timeline-item current">
-                    <div class="timeline-marker">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2025 - Present</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-badge current-role">Current Role</div>
-                        <h3 class="timeline-title">Level 2 IT Support Technician</h3>
-                        <h4 class="timeline-company">DATA PROCESS</h4>
-                        <p class="timeline-description">
-                            Leading advanced IT support operations for public sector organizations across Morocco. 
-                            Managing enterprise systems, conducting nationwide field operations, and maintaining 
-                            critical infrastructure for government entities including ABHS, Prefectures, ONP, DGI, TGR, and CNOPS.
-                        </p>
-                        <div class="timeline-achievements">
-                            <span class="achievement-tag">80+ Servers Managed</span>
-                            <span class="achievement-tag">50+ Cities Covered</span>
-                            <span class="achievement-tag">99%+ Uptime Maintained</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-marker">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">Apr - May 2025</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-badge internship">Internship</div>
-                        <h3 class="timeline-title">IT & Network Infrastructure Intern</h3>
-                        <h4 class="timeline-company">Université Privée de Fès (UPF)</h4>
-                        <p class="timeline-description">
-                            Developed enterprise web applications and implemented network security solutions. 
-                            Created Flask-based management systems, worked on SDN attack detection, and 
-                            contributed to VLAN configuration and network analysis projects.
-                        </p>
-                        <div class="timeline-achievements">
-                            <span class="achievement-tag">Flask Development</span>
-                            <span class="achievement-tag">SDN Security</span>
-                            <span class="achievement-tag">Network Analysis</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-marker">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2023 - 2025</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-badge education">Education</div>
-                        <h3 class="timeline-title">Digital Infrastructure Specialist</h3>
-                        <h4 class="timeline-company">OFPPT El Adarissa</h4>
-                        <p class="timeline-description">
-                            Comprehensive training in Network & Systems administration with focus on enterprise infrastructure. 
-                            Completed CCNA coursework, Network Security certification, and specialized in 
-                            Software-Defined Networking (SDN) technologies.
-                        </p>
-                        <div class="timeline-achievements">
-                            <span class="achievement-tag">CCNA Training</span>
-                            <span class="achievement-tag">Network Security</span>
-                            <span class="achievement-tag">SDN Specialization</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="timeline-item future">
-                    <div class="timeline-marker">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2026+</div>
-                    </div>
-                    <div class="timeline-content">
-                        <div class="timeline-badge future-goals">Future Goals</div>
-                        <h3 class="timeline-title">Advanced Career Development</h3>
-                        <h4 class="timeline-company">International Opportunities & Continued Education</h4>
-                        <p class="timeline-description">
-                            Pursuing senior IT infrastructure roles with international organizations while continuing education toward 
-                            Engineering or Master's degree. Planning to launch a comprehensive SDN (Software-Defined Networking) project 
-                            combining advanced cybersecurity with AI-powered network management and automation.
-                        </p>
-                        <div class="timeline-achievements">
-                            <span class="achievement-tag">Engineering/Master's Degree</span>
-                            <span class="achievement-tag">Large-Scale SDN Project</span>
-                            <span class="achievement-tag">International Mobility</span>
-                            <span class="achievement-tag">Systems Engineering Leadership</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="section">
-        <div class="container">
-            <h2 class="section-title">Technical Skills</h2>
-            <p class="section-subtitle">
-                Expertise across networking, cybersecurity, cloud technologies, and development
-            </p>
-            
-            <div class="impact-grid">
-                <div class="impact-card highlight">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="2"/>
-                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/>
-                        </svg>
-                    </div>
-                    <div class="impact-label">Networking</div>
-                    <div class="impact-description">Configuration of routers/switches; protocols (OSPF, RIP, VLAN, VPN, NAT, ACL); Field operations experience</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="4" width="20" height="16" rx="2"/>
-                            <path d="M6 8h.01M10 8h.01M14 8h.01"/>
-                        </svg>
-                    </div>
-                    <div class="impact-label">Windows Server</div>
-                    <div class="impact-description">DNS, DHCP, Active Directory, GPO, file servers, backup systems, WSUS, user management</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                            <line x1="8" y1="21" x2="16" y2="21"/>
-                            <line x1="12" y1="17" x2="12" y2="21"/>
-                        </svg>
-                    </div>
-                    <div class="impact-label">Linux Systems</div>
-                    <div class="impact-description">SSH, DNS, DHCP, user management, system security, Bash scripting, server troubleshooting</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z"/>
-                            <polyline points="9 12 10.5 13.5 15 9"/>
-                        </svg>
-                    </div>
-                    <div class="impact-label">Cybersecurity & SDN</div>
-                    <div class="impact-description">ICMP flood detection using Mininet & Ryu (OpenFlow), ACL security, firewall setup, DoS/DDoS prevention</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
-                        </svg>
-                    </div>
-                    <div class="impact-label">Cloud - Azure</div>
-                    <div class="impact-description">Deployment of VMs, virtual networks, firewall configuration, access management</div>
-                </div>
-                
-                <div class="impact-card highlight">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                            <polyline points="7.5 4.21 12 6.81 16.5 4.21"/>
-                            <polyline points="7.5 19.79 7.5 14.6 3 12"/>
-                            <polyline points="21 12 16.5 14.6 16.5 19.79"/>
-                        </svg>
-                    </div>
-                    <div class="impact-label">Field Operations & System Administration</div>
-                    <div class="impact-description">Nationwide field operations, complex troubleshooting, infrastructure maintenance, documentation, incident management</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                            <circle cx="12" cy="12" r="4"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">78%</div>
-                    <div class="impact-label">Virtualization</div>
-                    <div class="impact-description">VMware, Hyper-V, basic SDN integration</div>
-                </div>
-                
-                <div class="impact-card">
-                    <div class="impact-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="16 18 22 12 16 6"/>
-                            <polyline points="8 6 2 12 8 18"/>
-                        </svg>
-                    </div>
-                    <div class="impact-number">75%</div>
-                    <div class="impact-label">Development & Automation</div>
-                    <div class="impact-description">Flask web applications, Python scripting, SQLite databases, PyInstaller packaging, Google Apps Script</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="section">
-        <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
-            <p class="section-subtitle">
-                Real-world solutions showcasing my expertise in network security and software development
-            </p>
-            
-            <div class="projects-grid">
-                <div class="project-card featured" data-project="sdn">
-                    <div class="project-glow"></div>
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z"/>
-                                <path d="M9 12l2 2 4-4"/>
-                            </svg>
-                        </div>
-                        <div class="project-status">
-                            <span class="status-badge completed">Production Ready</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">SDN Attack Detection System</h3>
-                        <p class="project-description">
-                            Real-time ICMP flood attack detection system built with SDN technology. Features automated IP blocking, 
-                            email alerts, and comprehensive network monitoring using Mininet & Ryu controller.
-                        </p>
-                        <div class="project-metrics">
-                            <div class="metric">
-                                <span class="metric-value">99.7%</span>
-                                <span class="metric-label">Detection Accuracy</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-value">&lt;2s</span>
-                                <span class="metric-label">Response Time</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-value">0.1%</span>
-                                <span class="metric-label">False Positives</span>
-                            </div>
-                        </div>
-                        <div class="project-tech-stack">
-                            <div class="tech-category">
-                                <span class="tech-label">Backend:</span>
-                                <div class="tech-tags">
-                                    <span class="tech-tag python">Python</span>
-                                    <span class="tech-tag sdn">Ryu SDN</span>
-                                    <span class="tech-tag network">OpenFlow</span>
-                                </div>
-                            </div>
-                            <div class="tech-category">
-                                <span class="tech-label">Infrastructure:</span>
-                                <div class="tech-tags">
-                                    <span class="tech-tag tools">Mininet</span>
-                                    <span class="tech-tag security">ICMP Detection</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="project-actions">
-                            <button class="btn-project primary" onclick="openProjectModal('sdn')">
-                                <span>Explore Project</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M7 17l9.2-9.2M17 17V7H7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card enterprise" data-project="management">
-                    <div class="project-glow"></div>
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                                <circle cx="12" cy="12" r="4"/>
-                            </svg>
-                        </div>
-                        <div class="project-status">
-                            <span class="status-badge deployed">Enterprise Ready</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">Enterprise Supplier Management</h3>
-                        <p class="project-description">
-                            Full-stack web application for enterprise supplier and procurement management. Features advanced reporting, 
-                            role-based access control, automated workflows, and comprehensive data visualization dashboards.
-                        </p>
-                        <div class="project-metrics">
-                            <div class="metric">
-                                <span class="metric-value">75%</span>
-                                <span class="metric-label">Process Efficiency</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-value">20+hrs</span>
-                                <span class="metric-label">Time Saved/Week</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-value">99%</span>
-                                <span class="metric-label">Error Reduction</span>
-                            </div>
-                        </div>
-                        <div class="project-tech-stack">
-                            <div class="tech-category">
-                                <span class="tech-label">Full-Stack:</span>
-                                <div class="tech-tags">
-                                    <span class="tech-tag python">Flask</span>
-                                    <span class="tech-tag database">SQLite</span>
-                                    <span class="tech-tag frontend">HTML/CSS/JS</span>
-                                </div>
-                            </div>
-                            <div class="tech-category">
-                                <span class="tech-label">Features:</span>
-                                <div class="tech-tags">
-                                    <span class="tech-tag tools">PyInstaller</span>
-                                    <span class="tech-tag integration">Google Apps</span>
-                                    <span class="tech-tag visualization">Data Viz</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="project-actions">
-                            <button class="btn-project primary" onclick="openProjectModal('management')">
-                                <span>View Solution</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M7 17l9.2-9.2M17 17V7H7"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-card upcoming" data-project="sdn-ai">
-                    <div class="project-glow"></div>
-                    <div class="project-header">
-                        <div class="project-icon">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 1L2 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-10-4z"/>
-                                <path d="M9 12l2 2 4-4"/>
-                                <circle cx="12" cy="12" r="8" opacity="0.3"/>
-                                <path d="M8 12h8M12 8v8" opacity="0.5"/>
-                            </svg>
-                        </div>
-                        <div class="project-status">
-                            <span class="status-badge coming-soon">Coming Soon</span>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">AI-Powered SDN Security</h3>
-                        <p class="project-description">
-                            Next-generation cybersecurity platform combining Software Defined Networking with Machine Learning. 
-                            Intelligent threat detection, adaptive firewall rules, and automated incident response capabilities.
-                        </p>
-                        <div class="project-metrics">
-                            <div class="metric">
-                                <span class="metric-value">ML</span>
-                                <span class="metric-label">Threat Detection</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-value">Auto</span>
-                                <span class="metric-label">Mitigation</span>
-                            </div>
-                            <div class="metric">
-                                <span class="metric-value">Real-time</span>
-                                <span class="metric-label">Analytics</span>
-                            </div>
-                        </div>
-                        <div class="project-tech-stack">
-                            <div class="tech-category">
-                                <span class="tech-label">AI/ML:</span>
-                                <div class="tech-tags">
-                                    <span class="tech-tag ai">TensorFlow</span>
-                                    <span class="tech-tag sdn">Ryu Controller</span>
-                                    <span class="tech-tag python">Python</span>
-                                </div>
-                            </div>
-                            <div class="tech-category">
-                                <span class="tech-label">Network:</span>
-                                <div class="tech-tags">
-                                    <span class="tech-tag tools">Mininet</span>
-                                    <span class="tech-tag security">DDoS Detection</span>
-                                    <span class="tech-tag network">OpenFlow</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="project-actions">
-                            <button class="btn-project secondary" onclick="openProjectModal('sdn-ai')">
-                                <span>Preview Concept</span>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                    <circle cx="12" cy="12" r="3"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <p class="section-subtitle">
-                Ready to discuss opportunities in network engineering, cybersecurity, or IT infrastructure? 
-                Let's connect and explore how we can work together.
-            </p>
-            
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <h3 style="margin-bottom: 24px; color: var(--text-primary);">Contact Information</h3>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                <polyline points="22,6 12,13 2,6"/>
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <h4>Email</h4>
-                            <p>yassineassila321@gmail.com</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <h4>Phone</h4>
-                            <p>+212 6-88-53-22-98</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <h4>Location</h4>
-                            <p>Fes, Morocco (Open to relocation)</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                                <rect x="2" y="9" width="4" height="12"/>
-                                <circle cx="4" cy="4" r="2"/>
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <h4>LinkedIn</h4>
-                            <p>linkedin.com/in/yassine-aassila</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                            </svg>
-                        </div>
-                        <div class="contact-details">
-                            <h4>GitHub</h4>
-                            <p>github.com/Y-assila</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <form class="contact-form" id="contactForm" action="https://formspree.io/f/movwkgby" method="POST">
-                    <h3 style="margin-bottom: 24px; color: var(--text-primary);">Send a Message</h3>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="name">Your Name *</label>
-                        <input type="text" id="name" name="name" class="form-input" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="email">Your Email *</label>
-                        <input type="email" id="email" name="email" class="form-input" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="subject">Subject *</label>
-                        <select id="subject" name="subject" class="form-select" required>
-                            <option value="">Select a topic</option>
-                            <option value="job-opportunity">Job Opportunity</option>
-                            <option value="internship">Internship</option>
-                            <option value="collaboration">Collaboration</option>
-                            <option value="consultation">Technical Consultation</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="message">Your Message *</label>
-                        <textarea id="message" name="message" class="form-textarea" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">
-                        <span>Send Message</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 2L11 13"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2z"/>
-                        </svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Detail Modals -->
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle"></h2>
-                <button class="modal-close" onclick="closeProjectModal()">×</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Project content will be loaded here -->
-            </div>
-        </div>
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="#home" class="logo" aria-label="Home"><span class="logo-mark" id="logoMark">YA</span><span class="logo-text">Yassine<span class="dot">.</span></span></a>
+      <nav class="nav" id="nav" aria-label="Primary">
+        <a href="#now" class="nav-link">Now</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle light / dark theme" title="Toggle theme">
+          <svg class="i-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="i-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <a href="#contact" class="btn btn-sm btn-primary hide-mobile">Hire me</a>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
     </div>
+  </header>
 
+  <main id="main">
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="availability reveal" id="availability"><span class="pulse"></span><span id="availabilityText"></span></div>
+          <p class="eyebrow reveal">Hi, I'm</p>
+          <h1 class="hero-name reveal" id="heroName"></h1>
+          <p class="hero-typing reveal"><span class="prompt">&gt;</span> <span id="typing"></span><span class="caret"></span></p>
+          <p class="hero-summary reveal" id="heroSummary"></p>
+          <div class="hero-cta reveal">
+            <a href="#projects" class="btn btn-primary">View my work
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#contact" class="btn btn-ghost">Get in touch</a>
+            <a href="cv-en.pdf" class="btn btn-ghost" id="cvEn" download>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>CV (EN)
+            </a>
+            <a href="cv-fr.pdf" class="btn btn-ghost" id="cvFr" download>CV (FR)</a>
+          </div>
+          <div class="socials reveal" id="heroSocials"></div>
+        </div>
 
-    <!-- External JavaScript -->
-    <script src="script.js"></script>
+        <div class="terminal reveal" aria-label="Terminal showing a short profile">
+          <div class="terminal-bar">
+            <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
+            <span class="terminal-title">yassine@portfolio: ~</span>
+          </div>
+          <div class="terminal-body" id="terminalBody"></div>
+        </div>
+      </div>
+      <a href="#now" class="scroll-hint" aria-label="Scroll down"><span></span></a>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-strip">
+      <div class="container stats-grid" id="statsGrid"></div>
+    </section>
+
+    <!-- NOW -->
+    <section id="now" class="section">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">/ now</p>
+          <h2>What I'm up to right now</h2>
+          <p class="section-sub">A live snapshot of my work, studies and side projects. <span class="updated" id="nowUpdated"></span></p>
+        </header>
+        <div class="now-grid" id="nowGrid"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="container about-grid">
+        <header class="section-head reveal">
+          <p class="section-kicker">/ about</p>
+          <h2>Network engineer by training,<br>builder by habit</h2>
+        </header>
+        <div class="about-body reveal" id="aboutBody"></div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">/ experience</p>
+          <h2>Where I've worked &amp; studied</h2>
+          <p class="section-sub">Real production environments, real users. Click an entry to see the details.</p>
+        </header>
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">/ skills</p>
+          <h2>Toolbox</h2>
+          <p class="section-sub">Across networking, systems, security and development.</p>
+        </header>
+        <div class="skills-grid" id="skillsGrid"></div>
+      </div>
+      <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marqueeTrack"></div></div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">/ projects</p>
+          <h2>Things I've built</h2>
+          <p class="section-sub">From production work to lab experiments — including what I'm building now.</p>
+        </header>
+        <div class="toolbar reveal">
+          <div class="filters" id="filters" role="tablist" aria-label="Filter projects"></div>
+          <label class="search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="projectSearch" placeholder="Search projects or tech…" aria-label="Search projects">
+          </label>
+        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
+        <p class="empty" id="projectsEmpty" hidden>No project matches your search.</p>
+
+        <div class="gh-block">
+          <header class="gh-head reveal">
+            <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.76 2.69 1.25 3.35.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+              Latest from GitHub</h3>
+            <a class="link-arrow" id="ghProfileLink" href="#" target="_blank" rel="noopener">All repositories →</a>
+          </header>
+          <div class="gh-grid" id="ghGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container contact-grid">
+        <div class="reveal">
+          <p class="section-kicker">/ contact</p>
+          <h2>Let's work together</h2>
+          <p class="section-sub left">Looking for a network engineer, systems administrator or security-minded IT technician? Send me a message — I reply fast.</p>
+          <ul class="contact-list" id="contactList"></ul>
+        </div>
+        <form class="contact-form reveal" id="contactForm" novalidate>
+          <div class="field-row">
+            <label class="field"><span>Name</span><input type="text" name="name" required autocomplete="name"></label>
+            <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email"></label>
+          </div>
+          <label class="field"><span>Subject</span>
+            <select name="subject" required>
+              <option value="" disabled selected>Choose a topic</option>
+              <option>Job opportunity</option>
+              <option>Internship</option>
+              <option>Collaboration</option>
+              <option>Technical consultation</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label class="field"><span>Message</span><textarea name="message" rows="5" required></textarea></label>
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true">
+          <button type="submit" class="btn btn-primary" id="formBtn">Send message</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Yassine Aassila · Built by hand, hosted on GitHub Pages.</p>
+      <a href="#home" class="link-arrow">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <!-- Project modal -->
+  <dialog class="modal" id="projectModal" aria-labelledby="modalTitle">
+    <div class="modal-inner">
+      <button class="icon-btn modal-close" id="modalClose" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </dialog>
+
+  <!-- Image lightbox -->
+  <dialog class="lightbox" id="lightbox" aria-label="Image preview">
+    <button class="icon-btn modal-close" id="lightboxClose" aria-label="Close preview">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <img id="lightboxImg" alt="">
+  </dialog>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

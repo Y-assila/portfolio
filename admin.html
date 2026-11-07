@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — Portfolio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='2'%3E%3Crect x='4' y='11' width='16' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 8 0v4'/%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin">
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- Login -->
+  <main class="login" id="loginView">
+    <form class="card login-card" id="loginForm" autocomplete="off">
+      <div class="lock-ico">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <h1>Portfolio admin</h1>
+      <p class="muted">Sign in with a GitHub token. Only someone with write access to the repository can publish — the token never leaves your browser except to talk to GitHub.</p>
+      <label class="field"><span>Repository</span><input id="repo" value="Y-assila/portfolio" required spellcheck="false"></label>
+      <label class="field"><span>GitHub token</span><input id="token" type="password" required placeholder="github_pat_…" spellcheck="false" autocomplete="off"></label>
+      <label class="check"><input type="checkbox" id="remember"> Remember me on this device</label>
+      <button class="btn btn-primary" type="submit" id="loginBtn">Sign in</button>
+      <p class="form-status" id="loginStatus" role="status" aria-live="polite"></p>
+      <details class="howto">
+        <summary>How do I get a token?</summary>
+        <ol>
+          <li>GitHub → Settings → Developer settings → <b>Fine-grained personal access tokens</b> → Generate new token.</li>
+          <li>Repository access: <b>Only select repositories</b> → your portfolio repo.</li>
+          <li>Permissions → Repository → <b>Contents: Read and write</b> (nothing else).</li>
+          <li>Pick an expiry, generate, and paste it here.</li>
+        </ol>
+      </details>
+      <a class="link-arrow" href="index.html">← Back to the portfolio</a>
+    </form>
+  </main>
+
+  <!-- App -->
+  <div id="appView" hidden>
+    <header class="admin-bar">
+      <div class="admin-bar-inner">
+        <strong>Portfolio admin</strong>
+        <span class="muted mono" id="whoami"></span>
+        <span class="spacer"></span>
+        <a class="btn btn-sm btn-ghost" href="index.html" target="_blank" rel="noopener">View site ↗</a>
+        <button class="btn btn-sm btn-ghost" id="logout" type="button">Sign out</button>
+      </div>
+    </header>
+
+    <div class="admin-wrap">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="projects" role="tab">Projects</button>
+        <button class="tab" data-tab="now" role="tab">Now status</button>
+      </div>
+
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+      <!-- Projects tab -->
+      <section id="tab-projects">
+        <div id="listView">
+          <div class="list-head">
+            <h2>Projects <small class="muted" id="projectCount"></small></h2>
+            <button class="btn btn-primary" id="newProject" type="button">+ New project</button>
+          </div>
+          <div id="projectList" class="plist"></div>
+        </div>
+
+        <form id="editView" class="card editor" hidden novalidate>
+          <div class="list-head">
+            <h2 id="editorTitle">New project</h2>
+            <button class="btn btn-sm btn-ghost" type="button" id="cancelEdit">← Back</button>
+          </div>
+
+          <label class="field"><span>Title *</span><input id="f-title" required maxlength="80"></label>
+          <label class="field"><span>One-line tagline</span><input id="f-tagline" maxlength="140" placeholder="What is it, in one sentence?"></label>
+
+          <div class="grid3">
+            <label class="field"><span>Category</span>
+              <select id="f-category">
+                <option value="work">Work</option>
+                <option value="study">Study</option>
+                <option value="personal" selected>Personal</option>
+              </select>
+            </label>
+            <label class="field"><span>Status</span>
+              <select id="f-status">
+                <option value="completed">Completed</option>
+                <option value="in-progress" selected>In progress</option>
+                <option value="planned">Planned</option>
+              </select>
+            </label>
+            <label class="field"><span>Month</span><input id="f-date" type="month" required></label>
+          </div>
+
+          <label class="field"><span>Summary *</span><textarea id="f-summary" rows="4" required placeholder="A short paragraph about the project."></textarea></label>
+          <label class="field"><span>Technologies (comma separated)</span><input id="f-tags" placeholder="Python, Flask, SQLite"></label>
+
+          <div class="grid2">
+            <label class="field"><span>Key numbers <em>(one per line: value | label)</em></span>
+              <textarea id="f-metrics" rows="4" placeholder="99% | Uptime&#10;3x | Faster"></textarea></label>
+            <label class="field"><span>Links <em>(one per line: label | url | github/demo/pdf)</em></span>
+              <textarea id="f-links" rows="4" placeholder="Source code | https://github.com/Y-assila/repo | github"></textarea></label>
+          </div>
+
+          <label class="field"><span>Details <em>(a heading line, then "- " bullet lines; blank line between sections)</em></span>
+            <textarea id="f-details" rows="8" placeholder="What it does&#10;- Point one&#10;- Point two&#10;&#10;Stack&#10;- Python, Flask"></textarea></label>
+
+          <div class="field">
+            <span>Screenshots <em>(first one is the cover; large images are resized automatically)</em></span>
+            <div id="imageList" class="imglist"></div>
+            <input type="file" id="f-files" accept="image/png,image/jpeg,image/webp" multiple hidden>
+            <button class="btn btn-sm btn-ghost" type="button" id="addImages">+ Add images</button>
+          </div>
+
+          <label class="check"><input type="checkbox" id="f-featured"> Featured project</label>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit" id="publishBtn">Publish to portfolio</button>
+            <button class="btn btn-ghost" type="button" id="cancelEdit2">Cancel</button>
+          </div>
+          <p class="form-status" id="editStatus" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- Now tab -->
+      <section id="tab-now" hidden>
+        <form class="card editor" id="nowForm" novalidate>
+          <div class="list-head"><h2>What I'm up to right now</h2></div>
+          <div id="nowFields"></div>
+          <div class="actions"><button class="btn btn-primary" type="submit" id="nowBtn">Publish status</button></div>
+          <p class="form-status" id="nowStatus" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+body.admin { overflow-x: hidden; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); font-size: 0.82rem; }
+[hidden] { display: none !important; }
+
+.login { min-height: 100svh; display: grid; place-items: center; padding: 24px; }
+.login-card { width: min(440px, 100%); padding: 32px; display: grid; gap: 16px; }
+.login-card h1 { font-size: 1.8rem; font-weight: 800; }
+.lock-ico { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; background: var(--grad); color: #04121a; }
+.check { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--muted); cursor: pointer; }
+.howto { font-size: 0.88rem; color: var(--muted); }
+.howto summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.howto ol { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; list-style: decimal; }
+
+.admin-bar { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+.admin-bar-inner { width: min(980px, 100% - 32px); margin-inline: auto; height: 60px; display: flex; align-items: center; gap: 12px; }
+.spacer { flex: 1; }
+.admin-wrap { width: min(980px, 100% - 32px); margin: 28px auto 80px; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 22px; }
+.tab { padding: 9px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; font-weight: 600; }
+.tab.active { background: var(--grad); color: #04121a; border-color: transparent; }
+
+.list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.list-head h2 { font-size: 1.4rem; }
+.plist { display: grid; gap: 12px; }
+.prow { display: grid; grid-template-columns: 72px 1fr auto; gap: 16px; align-items: center; padding: 12px 16px 12px 12px; }
+.prow-thumb { width: 72px; height: 54px; border-radius: 10px; object-fit: cover; background: var(--bg-2); display: grid; place-items: center; font-family: var(--mono); color: var(--muted); font-size: 0.8rem; overflow: hidden; }
+.prow h3 { font-size: 1rem; }
+.prow-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; font-size: 0.78rem; color: var(--muted); font-family: var(--mono); }
+.prow-actions { display: flex; gap: 8px; }
+.btn-danger { color: #f87171; }
+.btn-danger:hover { background: rgba(248, 113, 113, 0.12); }
+
+.editor { padding: 28px; display: grid; gap: 18px; }
+.editor .list-head { margin: 0; }
+.field em { font-style: normal; font-weight: 400; opacity: 0.8; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.field textarea { font-family: var(--mono); font-size: 0.86rem; line-height: 1.55; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.imglist { display: grid; gap: 10px; margin: 6px 0 10px; }
+.imgrow { display: grid; grid-template-columns: 84px 1fr auto auto; gap: 12px; align-items: center; padding: 8px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+.imgrow img { width: 84px; height: 56px; object-fit: cover; border-radius: 8px; background: var(--bg); }
+.imgrow input { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); outline: 0; }
+.imgrow .badge-new { font-size: 0.7rem; font-weight: 700; color: var(--good); }
+
+.now-item { padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); display: grid; gap: 12px; margin-bottom: 16px; }
+.now-item h3 { font-size: 0.8rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+
+.toast { position: sticky; top: 72px; z-index: 15; margin-bottom: 18px; padding: 12px 16px; border-radius: 12px; font-weight: 600; background: rgba(52, 211, 153, 0.15); border: 1px solid rgba(52, 211, 153, 0.4); color: var(--good); }
+.toast.err { background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.4); color: #f87171; }
+
+@media (max-width: 720px) {
+  .grid3, .grid2 { grid-template-columns: 1fr; }
+  .prow { grid-template-columns: 56px 1fr; }
+  .prow-thumb { width: 56px; height: 44px; }
+  .prow-actions { grid-column: 1 / -1; }
+  .imgrow { grid-template-columns: 70px 1fr; }
+  .editor { padding: 18px; }
+}
